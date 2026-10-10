@@ -1,9 +1,21 @@
-name: check
+name: ci
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "datasets/**"
+      - "compose/**"
+      - "**/*.py"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "**/*.sql"
+      - "**/Makefile"
+      - "pyproject.toml"
   pull_request:
     paths:
       - "datasets/**"
+      - "compose/**"
       - "**/*.py"
       - "**/*.yml"
       - "**/*.yaml"
@@ -12,7 +24,17 @@ on:
       - "pyproject.toml"
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dataciviclab/.github/actions/python-setup@main
+        with:
+          extras: "dev"
+      - run: make test
+
   detect:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     outputs:
       dirs: ${{ steps.detect.outputs.dirs }}
@@ -29,7 +51,7 @@ jobs:
 
   validate-config:
     needs: detect
-    if: needs.detect.outputs.found == 'true'
+    if: github.event_name == 'pull_request' && needs.detect.outputs.found == 'true'
     uses: dataciviclab/.github/.github/workflows/dataset-config-check-reusable.yml@main
     with:
       configs: ${{ needs.detect.outputs.dirs }}

@@ -11,3 +11,4 @@ __pycache__/
 *.xlsx
 batch.txt
 _local/cache/
+_local/

@@ -1,80 +1,70 @@
 # open-ccnl
 
-Archivio nazionale dei **Contratti Collettivi Nazionali di Lavoro** (CNEL) —
-anagrafica, metriche di applicazione (Uniemens/INPS) e grafo confluenze.
+[![ci](https://github.com/dataciviclab/open-ccnl/actions/workflows/ci.yml/badge.svg)](https://github.com/dataciviclab/open-ccnl/actions/workflows/ci.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-> Repo **sperimentale locale** (`esperimenti-locali/`). Non è ancora un repo
-> Lab ufficiale: niente publish automatico, niente registry org.
->
-> La sperimentazione sul **corpus documentale** (testi MD dei CCNL, gap
-> analysis istituti, OCR) vive su branch locale `sperimentale/corpus-docs`.
+**I Contratti Collettivi Nazionali dell'Italia, in dati aperti.** In Italia
+circa 8 lavoratori su 10 lavorano sotto un CCNL: sono le regole di stipendi,
+tutele e orari per milioni di persone. Questo repo rende interrogabili
+l'anagrafica nazionale CNEL, le metriche di applicazione Uniemens/INPS e il
+graffio delle confluenze tra contratti.
 
-## Fonte
+## Cosa contengono i dati
 
-| Componente | URL | Formato |
-|---|---|---|
-| API open data metadata | `az-apim-cne-sa-0002-lgc-we.azure-api.net/.../open-data` | JSON |
-| Dati applicazione CCNL | CNEL Excel “dati-sull'applicazione-dei-ccnl-dal-2018” | XLSX multi-sheet |
-| Confluenze / storici | CNEL Excel documento-riepilogativo + principali-storici | XLSX |
+| Dataset | Righe | Periodo | Contenuto |
+|---|---:|---|---|
+| `ccnl_metadata` | ~7.700 | storico + corrente | Accordi depositati: codici, date, firmatari, ATECO |
+| `ccnl_applicazione` | ~13.200 | 2018–2025 | Datori e dipendenti per CCNL × anno (F/M dal 2023) |
+| `ccnl_territorio` | ~166.000 | 2023–2025 | Dipendenti per provincia × genere × CCNL |
+| `ccnl_confluenze` | ~610 | — | Mappa confluenze: quale codice storico è confluito dove |
 
-Licenza fonte: Italian Open Data License v2.0 (CNEL).
++ 12 mart analitici (ranking nazionali, serie storiche, quote di genere,
+intelligenza contrattuale composta). Fonte: [CNEL Archivio Contratti](https://www.cnel.it/archivio-contratti/contratti-open-data)
+— Italian Open Data License v2.0.
 
-## Dataset (v0)
+## Esempi di domande
 
-| Slug | Contenuto | Grano |
-|---|---|---|
-| `ccnl-metadata` | Codici, tipologie, date, firmatari, ATECO | 1 riga = 1 accordo depositato |
-| `ccnl-applicazione` | Datori, dipendenti, F/M per anno 2018–2025 | 1 riga = CCNL × anno |
-| `ccnl-territorio` | Dipendenti per provincia × genere (2023–2025) | 1 riga = CCNL × prov × sesso × anno |
-| `ccnl-confluenze` | Mappa confluenze storiche dei codici | 1 riga = codice confluito |
+- Quali sono i 20 CCNL che coprono più dipendenti, e come sono cambiate le quote?
+- Quanti contratti collettivi vigono in quali comparti, e dove è più frammentato?
+- Quali CCNL hanno superato la scadenza contrattuale e quanti lavoratori restano sotto quelle regole?
+- Come si sono fusi i codici contrattuali storici nei vigenti (grafo confluenze)?
+- Quante donne e uomini copre ogni contratto, per provincia?
 
-### Mart analitici
+## Come accedere
 
-| Dataset | Mart | Uso |
-|---|---|---|
-| applicazione | `mart_ccnl_serie` | serie lunga: quota, rank/anno, YoY |
-| applicazione | `mart_ccnl_top` | ranking nazionale ultimo anno + delta |
-| applicazione | `mart_ccnl_mercati` | aggregate per sottosezione × anno (F/M) |
-| metadata | `mart_ccnl_codici` | profilo depositi per codice (stesure, vita) |
-| metadata | `mart_ccnl_ateco` | 1 riga = codice × sezione ATECO |
-| territorio | `mart_ccnl_provincia` | CCNL × provincia × anno (F/M, rank locale) |
-| territorio | `mart_ccnl_regione` | CCNL × regione + n. provincie |
-| territorio | `mart_provincia_sintesi` | profilo provincia (tutti i CCNL) |
-| confluenze | `mart_ccnl_confluenze` | edge list grafo confluenze |
-| confluenze | `mart_ccnl_vigenti_confluenze` | n. storie per vigente |
-| **compose/ccnl-analisi** | **`mart_ccnl_intelligence`** | **peso × anagrafica × ATECO × storia** |
-| compose/ccnl-analisi | `mart_ccnl_settori` | codice × ATECO con peso |
-| compose/ccnl-analisi | `mart_ccnl_geo` | top-5 province per top-30 CCNL |
+1. **Parquet su GCS** — clean e mart esportati dal pipeline org; percorsi in
+   [`registry/registry.json`](registry/registry.json)
+   (`gs://dataciviclab-clean/` + duckdb httpfs).
+2. **Locale** — `uv pip install -e ".[pipeline]" && make run` → parquet in `out/data/`.
+3. **DuckDB diretto** — qualsiasi client che legga parquet del registry.
 
-**Fuori v0 del layer metriche**: OCR sistematico, estrazione minimi retributivi.
+## Approfondimenti
 
-## Quickstart
+- [Discussions del repo](https://github.com/dataciviclab/open-ccnl/discussions) — domande, idee, casi d'uso
+- [Decisioni tecniche](docs/decisions.md) · [Fonti](docs/sources.md)
 
-```bash
-# dipendenze pipeline (nel venv del workspace)
-uv pip install -e ".[pipeline,dev]" --system
+## Partecipa
 
-make check   # preflight config
-make run     # scarica + clean + mart (export TOOLKIT_ALLOW_SCRIPT_SOURCE=1 già nel Makefile)
-```
+Hai trovato un dato sbagliato o vuoi proporre un join con altri dataset del Lab?
+Apri una [Discussion](https://github.com/dataciviclab/open-ccnl/discussions) o
+un issue nel repo: contribuzioni di dati, SQL e segnalazioni sono benvenute
+([CONTRIBUTING.md](CONTRIBUTING.md)).
 
-Output: `out/data/{raw,clean,mart}/<slug>/<year>/`.
+## Note sui dati
 
-## Note di merito dati
-
-- Il campo `dipendenti` nell'API JSON è quasi sempre `null`: le metriche stanno
-  nell'Excel applicazione (fonte INPS Uniemens + conto annuale PPAA per la PA).
-- Alcuni CCNL PA hanno dipendenti Uniemens = 0: il dato è sul conto annuale
-  (colonna `filtri su conto annuale PPAA`).
-- Lavoro domestico (H501) appare con un flusso Uniemens diverso dal 2025.
+- Il campo `dipendenti` dell'API JSON è quasi sempre `null`: le metriche stanno
+  nell'Excel applicazione (Uniemens + conto annuale PPAA per la PA).
+- Alcuni CCNL PA hanno dipendenti Uniemens = 0: il dato è sul conto annuale.
 - 2025 può essere parziale (media 12 mesi a chiusura estrazione).
 - F012 (edili): il CNEL deposita solo accordi di rinnovo, niente testo definitivo.
 
-## Stato
+## Sviluppo
 
-- [ ] source-check formale SO (`cnel.it`)
-- [ ] Discussion Domanda (ancora pubblica)
-- [ ] Promozione fuori da `esperimenti-locali/`
-- [x] Layer tabellare v0 completo (4 dataset + 12 mart + compose)
-- [ ] Dashboard consultazione (valutare, layer tabellare)
-- Corpus documentale: branch `sperimentale/corpus-docs` (frozen, v. decisions.md)
+```bash
+uv pip install -e ".[pipeline,dev]" --system
+make check   # preflight config
+make run     # scarica + clean + mart
+make test    # contratti config + logica extract
+```
+
+Licenza del codice: [MIT](LICENSE). Licenza dei dati CNEL: IODL v2.0.
