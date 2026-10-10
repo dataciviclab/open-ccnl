@@ -122,6 +122,122 @@
       ]
     },
     {
+      "slug": "ccnl_argomenti",
+      "name": "Ccnl Argomenti",
+      "description": "Analisi Avanzata CNEL: accordi classificati per sotto-argomento (88 voci ufficiali: minimi, TFR, scatti...).",
+      "source": "",
+      "source_id": "cnel_archivio",
+      "period": {
+        "start": 1980,
+        "end": 2026
+      },
+      "tags": [
+        "welfare-lavoro",
+        "ccnl",
+        "cnel",
+        "analisi-avanzata",
+        "argomenti"
+      ],
+      "category": "welfare-lavoro",
+      "columns": [
+        {
+          "name": "id_accordo",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_ccnl",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_argomento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nome_argomento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_macro",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nome_macro",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipologia_accordo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_stipula",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_decorrenza",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_scadenza_contrattuale",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo_ccnl",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "settori_ateco",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "stato_aa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "ultimo_accordo_vigente",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/open-ccnl/ccnl_argomenti/2026/ccnl_argomenti_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "ccnl_argomenti__mart_argomenti_stats",
+        "ccnl_argomenti__mart_codici_argomenti",
+        "ccnl_argomenti__mart_codici_pivot"
+      ]
+    },
+    {
       "slug": "ccnl_confluenze",
       "name": "Ccnl Confluenze",
       "description": "Mappa delle confluenze dei codici CCNL: codici storici confluiti in CCNL vigenti.",
@@ -537,6 +653,36 @@
       }
     },
     {
+      "slug": "ccnl_argomenti__mart_argomenti_stats",
+      "dataset": "ccnl_argomenti",
+      "table": "mart_argomenti_stats",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_argomenti/2026/mart_argomenti_stats.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "ccnl_argomenti__mart_codici_argomenti",
+      "dataset": "ccnl_argomenti",
+      "table": "mart_codici_argomenti",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_argomenti/2026/mart_codici_argomenti.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "ccnl_argomenti__mart_codici_pivot",
+      "dataset": "ccnl_argomenti",
+      "table": "mart_codici_pivot",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_argomenti/2026/mart_codici_pivot.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "ccnl_confluenze__mart_ccnl_confluenze",
       "dataset": "ccnl_confluenze",
       "table": "mart_ccnl_confluenze",
@@ -616,7 +762,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261010T153839Z_d6669f7e",
+        "run_id": "20261010T212521Z_aaf0879e",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -626,11 +772,11 @@
           "mart": 6130
         },
         "output_bytes": {
-          "mart": 183061
+          "mart": 187092
         },
-        "started_at": "2026-10-10T15:38:39.327075+00:00",
-        "finished_at": "2026-10-10T15:38:39.454122+00:00",
-        "duration_seconds": 0.127
+        "started_at": "2026-10-10T21:25:21.040297+00:00",
+        "finished_at": "2026-10-10T21:25:21.168581+00:00",
+        "duration_seconds": 0.128
       }
     },
     {
@@ -641,7 +787,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261010T153805Z_2ec8cac7",
+        "run_id": "20261010T211001Z_5c14e16d",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -657,11 +803,42 @@
         "output_bytes": {
           "raw": 2882924,
           "clean": 136412,
-          "mart": 285546
+          "mart": 284977
         },
-        "started_at": "2026-10-10T15:38:05.390821+00:00",
-        "finished_at": "2026-10-10T15:38:08.252090+00:00",
-        "duration_seconds": 2.861
+        "started_at": "2026-10-10T21:10:01.918964+00:00",
+        "finished_at": "2026-10-10T21:10:04.938634+00:00",
+        "duration_seconds": 3.02
+      }
+    },
+    {
+      "id": "ccnl_argomenti",
+      "source_id": "cnel_archivio",
+      "status": "ok",
+      "label": "ccnl_argomenti",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261010T211005Z_2f5a1f98",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 95899,
+          "clean": 95899,
+          "mart": 41631
+        },
+        "output_bytes": {
+          "raw": 22262914,
+          "clean": 602962,
+          "mart": 128345
+        },
+        "started_at": "2026-10-10T21:10:05.384823+00:00",
+        "finished_at": "2026-10-10T21:24:51.058112+00:00",
+        "duration_seconds": 885.673
       }
     },
     {
@@ -672,7 +849,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261010T153808Z_6697f2b7",
+        "run_id": "20261010T212451Z_08c55424",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -688,11 +865,11 @@
         "output_bytes": {
           "raw": 78167,
           "clean": 12746,
-          "mart": 5758
+          "mart": 5769
         },
-        "started_at": "2026-10-10T15:38:08.722648+00:00",
-        "finished_at": "2026-10-10T15:38:11.029089+00:00",
-        "duration_seconds": 2.306
+        "started_at": "2026-10-10T21:24:51.476671+00:00",
+        "finished_at": "2026-10-10T21:24:54.519979+00:00",
+        "duration_seconds": 3.043
       }
     },
     {
@@ -703,7 +880,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261010T153811Z_bc67ced5",
+        "run_id": "20261010T212454Z_420a973d",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -718,12 +895,12 @@
         },
         "output_bytes": {
           "raw": 4097822,
-          "clean": 434913,
-          "mart": 159582
+          "clean": 434930,
+          "mart": 159534
         },
-        "started_at": "2026-10-10T15:38:11.474707+00:00",
-        "finished_at": "2026-10-10T15:38:31.209818+00:00",
-        "duration_seconds": 19.735
+        "started_at": "2026-10-10T21:24:54.926243+00:00",
+        "finished_at": "2026-10-10T21:25:12.600386+00:00",
+        "duration_seconds": 17.674
       }
     },
     {
@@ -734,7 +911,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261010T153831Z_f7d5b4e2",
+        "run_id": "20261010T212513Z_7c0b0390",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -750,11 +927,11 @@
         "output_bytes": {
           "raw": 6061663,
           "clean": 518479,
-          "mart": 981325
+          "mart": 981694
         },
-        "started_at": "2026-10-10T15:38:31.649332+00:00",
-        "finished_at": "2026-10-10T15:38:38.841374+00:00",
-        "duration_seconds": 7.192
+        "started_at": "2026-10-10T21:25:13.016584+00:00",
+        "finished_at": "2026-10-10T21:25:20.579505+00:00",
+        "duration_seconds": 7.563
       }
     }
   ],
