@@ -7,7 +7,7 @@
 circa 8 lavoratori su 10 lavorano sotto un CCNL: sono le regole di stipendi,
 tutele e orari per milioni di persone. Questo repo rende interrogabili
 l'anagrafica nazionale CNEL, le metriche di applicazione Uniemens/INPS e il
-graffio delle confluenze tra contratti.
+grafo delle confluenze tra contratti.
 
 ## Cosa contengono i dati
 
