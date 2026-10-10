@@ -31,7 +31,7 @@ Output in `out/` (non committare).
 - `dataset.yml` è l'unica fonte di verità della pipeline.
 - `clean.sql` legge solo da `raw_input`; `mart*.sql` solo da `clean_input`.
 - Gli Excel multi-sheet richiedono `type: script` + `extract.py` (non `http_file`);
-  gli extract sono stdlib-only (urllib + csv), niente dipendenze Excel.
+  gli extract usano openpyxl (dichiarata nelle dependencies runtime).
 - Category chiusa: `welfare-lavoro` (candidate-standard App. A).
 - Ogni test ha un marker (`contract` / `adapter` / `pure_unit` / `smoke`).
 
