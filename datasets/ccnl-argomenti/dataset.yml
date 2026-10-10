@@ -1,0 +1,88 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ccnl_argomenti"
+  source_id: "cnel_archivio"
+  tags: [welfare-lavoro, ccnl, cnel, analisi-avanzata, argomenti]
+  category: welfare-lavoro
+  description: "Analisi Avanzata CNEL: accordi classificati per sotto-argomento (88 voci ufficiali: minimi, TFR, scatti...)."
+  years: [2026]
+  time_coverage:
+    start_year: 1980
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "cnel_aa_sweep"
+      type: "script"
+      args:
+        command: "python3 extract.py raw.csv"
+        output: "raw.csv"
+      client:
+        timeout: 900
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+  required_columns:
+    - id_accordo
+    - codice_ccnl
+    - codice_argomento
+  validate:
+    min_rows: 8000
+    not_null:
+      - id_accordo
+      - codice_argomento
+    primary_key:
+      - id_accordo
+      - codice_argomento
+
+mart:
+  tables:
+    - name: "mart_argomenti_stats"
+      sql: "sql/mart_argomenti_stats.sql"
+    - name: "mart_codici_argomenti"
+      sql: "sql/mart_codici_argomenti.sql"
+    - name: "mart_codici_pivot"
+      sql: "sql/mart_codici_pivot.sql"
+  required_tables:
+    - "mart_argomenti_stats"
+    - "mart_codici_argomenti"
+    - "mart_codici_pivot"
+  validate:
+    table_rules:
+      mart_argomenti_stats:
+        required_columns:
+          - codice_argomento
+          - nome_argomento
+          - n_accordi
+          - n_codici_ccnl
+        primary_key:
+          - codice_argomento
+        min_rows: 50
+      mart_codici_argomenti:
+        required_columns:
+          - codice_ccnl
+          - codice_argomento
+          - n_stesure
+        primary_key:
+          - codice_ccnl
+          - codice_argomento
+        min_rows: 3000
+      mart_codici_pivot:
+        required_columns:
+          - codice_ccnl
+          - n_argomenti
+        primary_key:
+          - codice_ccnl
+        min_rows: 200
+
+validation:
+  fail_on_error: true

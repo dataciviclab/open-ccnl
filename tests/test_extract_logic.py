@@ -72,3 +72,41 @@ def test_metadata_join_list() -> None:
     assert mod._join(True) == "true"
     assert mod._join(None) == ""
     assert mod._join(" x ") == "x"
+
+
+@pytest.mark.pure_unit
+def test_argomenti_trim_date_and_row_mapping() -> None:
+    mod = _load(
+        "extract_argomenti",
+        REPO / "datasets" / "ccnl-argomenti" / "extract.py",
+    )
+    assert mod._trim_date("2021-12-06T00:00:00") == "2021-12-06"
+    assert mod._trim_date(None) == ""
+    assert mod._trim_date("") == ""
+
+    tax = {
+        "codice": "CR5",
+        "nome": "Trattamento di fine rapporto",
+        "codice_macro": "CR",
+        "nome_macro": "CESSAZIONE DEL RAPPORTO",
+    }
+    item = {
+        "idAccordo": 140725,
+        "codiceCcnl": " e015 ",
+        "tipologiaAccordo": "Accordo di rinnovo",
+        "dataStipula": "2021-12-06",
+        "dataDecorrenza": None,
+        "dataScadenzaContrattuale": "2022-12-31",
+        "titoloCcnl": "CCNL alimentari",
+        "settoriAtecoAccordo": ["E", "E01"],
+        "statoAA": "pubblicata",
+        "ultimoAccordoVigente": True,
+    }
+    row = mod.row_from_api(item, tax)
+    assert row["id_accordo"] == 140725
+    assert row["codice_ccnl"] == "E015"
+    assert row["codice_argomento"] == "CR5"
+    assert row["codice_macro"] == "CR"
+    assert row["data_decorrenza"] == ""
+    assert row["settori_ateco"] == "E;E01"
+    assert row["ultimo_accordo_vigente"] == "true"

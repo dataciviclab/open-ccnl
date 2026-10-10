@@ -28,6 +28,10 @@ support:
     type: dataset
     config: "../../datasets/ccnl-territorio/dataset.yml"
     years: [2026]
+  - name: argomenti
+    type: dataset
+    config: "../../datasets/ccnl-argomenti/dataset.yml"
+    years: [2026]
 
 mart:
   tables:
@@ -51,6 +55,7 @@ mart:
           - quota_dipendenti
           - n_stesure
           - n_codici_confluiti
+          - n_argomenti_aa
         primary_key:
           - codice_ccnl
         min_rows: 100
