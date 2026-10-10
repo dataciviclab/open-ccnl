@@ -1,0 +1,32 @@
+# Pipeline — run completo post-merge + refresh mensile
+# Interfaccia: make run-all (già con TOOLKIT_ALLOW_SCRIPT_SOURCE=1).
+# Logica (detect, GCS sync, registry PR) nel reusable workflow org.
+
+name: Pipeline
+
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - "datasets/**"
+  schedule:
+    - cron: "0 6 1 * *"
+  workflow_dispatch:
+
+concurrency:
+  group: open-ccnl-pipeline-${{ github.event.pull_request.number || github.ref || 'schedule' }}
+  cancel-in-progress: false
+
+jobs:
+  pipeline:
+    if: github.event.pull_request.merged == true || github.event_name != 'pull_request'
+    uses: dataciviclab/.github/.github/workflows/pipeline-reusable.yml@main
+    with:
+      repo-slug: "open-ccnl"
+      run-command: "make run-all"
+      detect-paths: "datasets compose"
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    secrets: inherit
