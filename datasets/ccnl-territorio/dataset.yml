@@ -1,0 +1,99 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ccnl_territorio"
+  source_id: "cnel_archivio"
+  tags: [welfare-lavoro, ccnl, cnel, territorio, provincia, uniemens]
+  category: welfare-lavoro
+  description: "Applicazione CCNL per provincia e genere (INPS Uniemens) — fogli provinciali 2023-2025."
+  years: [2026]
+  time_coverage:
+    start_year: 2023
+    end_year: 2025
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "cnel_excel_provinciali"
+      type: "script"
+      args:
+        command: "python3 extract.py raw.csv"
+        output: "raw.csv"
+      client:
+        timeout: 180
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+  required_columns:
+    - codice_ccnl
+    - anno
+    - sigla_provincia
+    - sesso
+    - n_dipendenti
+  validate:
+    min_rows: 40000
+    not_null:
+      - codice_ccnl
+      - anno
+      - sigla_provincia
+      - sesso
+    primary_key:
+      - codice_ccnl
+      - anno
+      - sigla_provincia
+      - sesso
+
+mart:
+  tables:
+    - name: "mart_ccnl_provincia"
+      sql: "sql/mart_ccnl_provincia.sql"
+    - name: "mart_ccnl_regione"
+      sql: "sql/mart_ccnl_regione.sql"
+    - name: "mart_provincia_sintesi"
+      sql: "sql/mart_provincia_sintesi.sql"
+  required_tables:
+    - "mart_ccnl_provincia"
+    - "mart_provincia_sintesi"
+  validate:
+    table_rules:
+      mart_ccnl_provincia:
+        required_columns:
+          - codice_ccnl
+          - anno
+          - sigla_provincia
+          - n_dipendenti
+        primary_key:
+          - codice_ccnl
+          - anno
+          - sigla_provincia
+        min_rows: 30000
+      mart_ccnl_regione:
+        required_columns:
+          - codice_ccnl
+          - anno
+          - regione
+          - n_dipendenti
+        primary_key:
+          - codice_ccnl
+          - anno
+          - regione
+        min_rows: 5000
+      mart_provincia_sintesi:
+        required_columns:
+          - anno
+          - sigla_provincia
+          - n_dipendenti
+        primary_key:
+          - anno
+          - sigla_provincia
+        min_rows: 100
+
+validation:
+  fail_on_error: true

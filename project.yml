@@ -1,0 +1,30 @@
+# DataCivicLab — open-ccnl
+name: open-ccnl
+kind: dataset-project
+status: experimental-local
+description: >
+  Archivio nazionale CCNL (CNEL): anagrafica (API open data), metriche di
+  applicazione Uniemens/INPS, territorio e grafo confluenze. Pipeline
+  toolkit RAW → CLEAN → MART + compose analitico.
+docs:
+  pipeline: README.md
+data_source:
+  type: cnel_api_excel
+  endpoint: https://az-apim-cne-sa-0002-lgc-we.azure-api.net/ricerca-api/ricerca/pubblica
+  format: json + xlsx
+  filter: archivio corrente/storico + fogli applicazione e confluenze
+pipeline:
+  stages:
+    - fetch   # API JSON + Excel multi-sheet via extract script
+    - clean   # normalizzazione colonne/anni
+    - mart    # ranking, serie, quote, geo, intelligence compose
+outputs:
+  - path: out/data/clean/<slug>/<year>/
+    kind: table
+    contract: clean parquet (v. dataset.yml per slug)
+  - path: out/data/mart/<slug>/<year>/
+    kind: table
+    contract: mart analitici (v. dataset.yml per slug)
+consumers:
+  - compose/ccnl-analisi (mart_ccnl_intelligence)
+  - analisi locali / dashboard

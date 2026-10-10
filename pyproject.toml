@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dataciviclab-cnel-archivio"
+version = "0.1.0"
+description = "Archivio CNEL CCNL: anagrafica, metriche Uniemens e confluenze"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+
+# duckdb: dipendenza runtime (usata dai test SQL e dal motore).
+# toolkit è CLI esterno → vive nell'extra `pipeline`.
+# openpyxl: usata dagli extract Excel multi-sheet (script raw).
+dependencies = [
+    "duckdb>=1.5.3,<2",
+    "openpyxl>=3.1",
+    "pyyaml>=6.0",
+    "pandas>=2.0",
+    "pyarrow>=14.0",
+]
+
+[tool.setuptools]
+packages = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.5",
+]
+pipeline = [
+    "dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git",
+]
+
+[project.urls]
+Home = "https://github.com/dataciviclab/open-ccnl"
+
+[tool.toolkit.extends]
+source_id = "cnel_archivio"

@@ -1,0 +1,78 @@
+# Compose analitico: una riga per CCNL con peso Uniemens, anagrafica, ATECO e storia confluenze.
+# I support sono i sibling datasets/ — se gli output esistono già, toolkit li riusa (skip-if-exists).
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ccnl_analisi"
+  source_id: "cnel_archivio"
+  tags: [welfare-lavoro, ccnl, cnel, compose, intelligence]
+  category: welfare-lavoro
+  description: "Intelligence CCNL: join peso Uniemens × anagrafica depositi × ATECO × storia confluenze."
+  years: [2026]
+
+support:
+  - name: applicazione
+    type: dataset
+    config: "../../datasets/ccnl-applicazione/dataset.yml"
+    years: [2026]
+  - name: metadata
+    type: dataset
+    config: "../../datasets/ccnl-metadata/dataset.yml"
+    years: [2026]
+  - name: confluenze
+    type: dataset
+    config: "../../datasets/ccnl-confluenze/dataset.yml"
+    years: [2026]
+  - name: territorio
+    type: dataset
+    config: "../../datasets/ccnl-territorio/dataset.yml"
+    years: [2026]
+
+mart:
+  tables:
+    - name: "mart_ccnl_intelligence"
+      sql: "sql/mart_ccnl_intelligence.sql"
+    - name: "mart_ccnl_settori"
+      sql: "sql/mart_ccnl_settori.sql"
+    - name: "mart_ccnl_geo"
+      sql: "sql/mart_ccnl_geo.sql"
+  required_tables:
+    - "mart_ccnl_intelligence"
+    - "mart_ccnl_settori"
+    - "mart_ccnl_geo"
+  validate:
+    table_rules:
+      mart_ccnl_intelligence:
+        required_columns:
+          - codice_ccnl
+          - n_dipendenti
+          - rank_nazionale
+          - quota_dipendenti
+          - n_stesure
+          - n_codici_confluiti
+        primary_key:
+          - codice_ccnl
+        min_rows: 100
+      mart_ccnl_settori:
+        required_columns:
+          - codice_ccnl
+          - settore_ateco
+          - n_dipendenti
+        primary_key:
+          - codice_ccnl
+          - settore_ateco
+        min_rows: 100
+      mart_ccnl_geo:
+        required_columns:
+          - codice_ccnl
+          - sigla_provincia
+          - n_dipendenti_provincia
+          - rank_geo
+        primary_key:
+          - codice_ccnl
+          - sigla_provincia
+        min_rows: 50
+
+validation:
+  fail_on_error: true

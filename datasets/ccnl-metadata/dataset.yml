@@ -1,0 +1,81 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ccnl_metadata"
+  source_id: "cnel_archivio"
+  tags: [welfare-lavoro, ccnl, cnel, contrattazione-collettiva, anagrafica]
+  category: welfare-lavoro
+  description: "Anagrafica CCNL CNEL: archivio corrente e storico (codici, tipologie, date, firmatari, ATECO)."
+  years: [2026]
+  time_coverage:
+    start_year: 1990
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "cnel_open_data"
+      type: "script"
+      args:
+        command: "python3 extract.py raw.csv"
+        output: "raw.csv"
+      client:
+        timeout: 180
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+  required_columns:
+    - id_accordo
+    - codice_ccnl
+    - tipologia_accordo
+    - titolo
+    - archivio
+  validate:
+    min_rows: 1000
+    not_null:
+      - id_accordo
+      - codice_ccnl
+    primary_key:
+      - id_accordo
+      - archivio
+
+mart:
+  tables:
+    - name: "mart_ccnl_codici"
+      sql: "sql/mart_ccnl_codici.sql"
+    - name: "mart_ccnl_ateco"
+      sql: "sql/mart_ccnl_ateco.sql"
+  required_tables:
+    - "mart_ccnl_codici"
+    - "mart_ccnl_ateco"
+  validate:
+    table_rules:
+      mart_ccnl_codici:
+        required_columns:
+          - codice_ccnl
+          - n_stesure
+          - primo_deposito
+          - ultimo_deposito
+          - vita_anni_depositi
+        primary_key:
+          - codice_ccnl
+        min_rows: 100
+      mart_ccnl_ateco:
+        required_columns:
+          - codice_ccnl
+          - settore_ateco
+          - n_stesure
+        primary_key:
+          - codice_ccnl
+          - settore_ateco
+        min_rows: 100
+
+validation:
+  fail_on_error: true

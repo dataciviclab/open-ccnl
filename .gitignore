@@ -1,0 +1,13 @@
+out/
+output/
+__pycache__/
+*.pyc
+*.pyo
+.tmp/
+*.parquet
+!data/derived/*.parquet
+*.csv
+.pytest_cache/
+*.xlsx
+batch.txt
+_local/cache/

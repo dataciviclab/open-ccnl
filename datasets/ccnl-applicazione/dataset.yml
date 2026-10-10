@@ -1,0 +1,92 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ccnl_applicazione"
+  source_id: "cnel_archivio"
+  tags: [welfare-lavoro, ccnl, cnel, uniemens, headcount]
+  category: welfare-lavoro
+  description: "Applicazione dei CCNL: datori di lavoro e dipendenti (Uniemens/INPS) 2018-2025, con F/M dal 2023."
+  years: [2026]
+  time_coverage:
+    start_year: 2018
+    end_year: 2025
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "cnel_excel_applicazione"
+      type: "script"
+      args:
+        command: "python3 extract.py raw.csv"
+        output: "raw.csv"
+      client:
+        timeout: 180
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+  required_columns:
+    - codice_ccnl
+    - anno
+    - n_dipendenti
+  validate:
+    min_rows: 5000
+    not_null:
+      - codice_ccnl
+      - anno
+    primary_key:
+      - codice_ccnl
+      - anno
+
+mart:
+  tables:
+    - name: "mart_ccnl_serie"
+      sql: "sql/mart_ccnl_serie.sql"
+    - name: "mart_ccnl_top"
+      sql: "sql/mart_ccnl_top.sql"
+    - name: "mart_ccnl_mercati"
+      sql: "sql/mart_ccnl_mercati.sql"
+  required_tables:
+    - "mart_ccnl_serie"
+    - "mart_ccnl_top"
+  validate:
+    table_rules:
+      mart_ccnl_serie:
+        required_columns:
+          - codice_ccnl
+          - anno
+          - n_dipendenti
+          - quota_dipendenti_anno
+          - rank_dipendenti_anno
+          - delta_dipendenti
+        primary_key:
+          - codice_ccnl
+          - anno
+        min_rows: 1000
+      mart_ccnl_top:
+        required_columns:
+          - codice_ccnl
+          - ultimo_anno_con_dati
+          - n_dipendenti
+          - rank_nazionale
+        primary_key:
+          - codice_ccnl
+        min_rows: 100
+      mart_ccnl_mercati:
+        required_columns:
+          - anno
+          - sottosezione
+          - n_dipendenti
+        primary_key:
+          - anno
+          - sottosezione
+        min_rows: 10
+
+validation:
+  fail_on_error: true

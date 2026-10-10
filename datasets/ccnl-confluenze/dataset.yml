@@ -1,0 +1,71 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ccnl_confluenze"
+  source_id: "cnel_archivio"
+  tags: [welfare-lavoro, ccnl, cnel, confluenze, grafo-storico]
+  category: welfare-lavoro
+  description: "Mappa delle confluenze dei codici CCNL: codici storici confluiti in CCNL vigenti."
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "cnel_excel_confluenze"
+      type: "script"
+      args:
+        command: "python3 extract.py raw.csv"
+        output: "raw.csv"
+      client:
+        timeout: 180
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+  required_columns:
+    - codice_confluito
+    - codice_vigente
+    - fonte
+  validate:
+    min_rows: 50
+    not_null:
+      - codice_confluito
+      - codice_vigente
+    # PK non dichiarata: lo stesso codice confluito può comparire più volte
+    # (storia multi-tratta / sezioni ATECO). Deroga documentata in notes.md.
+
+mart:
+  tables:
+    - name: "mart_ccnl_confluenze"
+      sql: "sql/mart_ccnl_confluenze.sql"
+    - name: "mart_ccnl_vigenti_confluenze"
+      sql: "sql/mart_ccnl_vigenti_confluenze.sql"
+  required_tables:
+    - "mart_ccnl_confluenze"
+    - "mart_ccnl_vigenti_confluenze"
+  validate:
+    table_rules:
+      mart_ccnl_confluenze:
+        required_columns:
+          - codice_confluito
+          - codice_vigente
+        primary_key:
+          - codice_confluito
+        min_rows: 50
+      mart_ccnl_vigenti_confluenze:
+        required_columns:
+          - codice_vigente
+          - n_codici_confluiti
+          - codici_confluiti
+        primary_key:
+          - codice_vigente
+        min_rows: 20
+
+validation:
+  fail_on_error: true
