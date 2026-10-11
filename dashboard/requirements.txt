@@ -1,0 +1,6 @@
+# Pin export per Streamlit Cloud — fonte di verità: extra `dashboard` nel pyproject.
+streamlit>=1.61
+plotly>=5.18
+altair>=6.2
+pandas>=3.0
+lab-connectors[duckdb] @ git+https://github.com/dataciviclab/lab-connectors.git
