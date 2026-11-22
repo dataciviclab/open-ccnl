@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "open-ccnl",
   "source_repo": "dataciviclab/open-ccnl",
-  "updated_at": "2026-11-01",
+  "updated_at": "2026-11-22",
   "datasets": [
     {
       "slug": "ccnl_analisi",
@@ -128,6 +128,12 @@
           "description": ""
         },
         {
+          "name": "is_conto_annuale_ppaa",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
           "name": "fonte_note",
           "type": "VARCHAR",
           "role": "dimension",
@@ -143,7 +149,9 @@
       "mart_refs": [
         "ccnl_applicazione__mart_ccnl_serie",
         "ccnl_applicazione__mart_ccnl_top",
-        "ccnl_applicazione__mart_ccnl_mercati"
+        "ccnl_applicazione__mart_ccnl_mercati",
+        "ccnl_applicazione__mart_ccnl_totali_anno",
+        "ccnl_applicazione__mart_ccnl_classifica"
       ]
     },
     {
@@ -153,7 +161,7 @@
       "source": "",
       "source_id": "cnel_archivio",
       "period": {
-        "start": 1980,
+        "start": 1952,
         "end": 2026
       },
       "tags": [
@@ -361,7 +369,7 @@
       "source": "",
       "source_id": "cnel_archivio",
       "period": {
-        "start": 1990,
+        "start": 1946,
         "end": 2026
       },
       "tags": [
@@ -533,7 +541,8 @@
       "stage": "incubating",
       "mart_refs": [
         "ccnl_metadata__mart_ccnl_codici",
-        "ccnl_metadata__mart_ccnl_ateco"
+        "ccnl_metadata__mart_ccnl_ateco",
+        "ccnl_metadata__mart_ccnl_rinnovi"
       ]
     },
     {
@@ -648,6 +657,16 @@
       }
     },
     {
+      "slug": "ccnl_applicazione__mart_ccnl_classifica",
+      "dataset": "ccnl_applicazione",
+      "table": "mart_ccnl_classifica",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_applicazione/2026/mart_ccnl_classifica.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "ccnl_applicazione__mart_ccnl_mercati",
       "dataset": "ccnl_applicazione",
       "table": "mart_ccnl_mercati",
@@ -674,6 +693,16 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/open-ccnl/ccnl_applicazione/2026/mart_ccnl_top.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "ccnl_applicazione__mart_ccnl_totali_anno",
+      "dataset": "ccnl_applicazione",
+      "table": "mart_ccnl_totali_anno",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_applicazione/2026/mart_ccnl_totali_anno.parquet",
         "multi_file": false
       }
     },
@@ -748,6 +777,16 @@
       }
     },
     {
+      "slug": "ccnl_metadata__mart_ccnl_rinnovi",
+      "dataset": "ccnl_metadata",
+      "table": "mart_ccnl_rinnovi",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_metadata/2026/mart_ccnl_rinnovi.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "ccnl_territorio__mart_ccnl_provincia",
       "dataset": "ccnl_territorio",
       "table": "mart_ccnl_provincia",
@@ -787,21 +826,21 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261101T125539Z_b8dc36ee",
+        "run_id": "20261122T225810Z_8a372aea",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
           "mart": 100
         },
         "output_rows": {
-          "mart": 6131
+          "mart": 6096
         },
         "output_bytes": {
-          "mart": 186090
+          "mart": 197037
         },
-        "started_at": "2026-11-01T12:55:39.726794+00:00",
-        "finished_at": "2026-11-01T12:55:39.814836+00:00",
-        "duration_seconds": 0.088
+        "started_at": "2026-11-22T22:58:10.223688+00:00",
+        "finished_at": "2026-11-22T22:58:10.331749+00:00",
+        "duration_seconds": 0.108
       }
     },
     {
@@ -812,7 +851,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261101T124402Z_71813fee",
+        "run_id": "20261122T224651Z_3a0a8c51",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -823,16 +862,16 @@
         "output_rows": {
           "raw": 13184,
           "clean": 13184,
-          "mart": 14324
+          "mart": 15253
         },
         "output_bytes": {
           "raw": 2880663,
-          "clean": 136392,
-          "mart": 287051
+          "clean": 136571,
+          "mart": 355024
         },
-        "started_at": "2026-11-01T12:44:02.488855+00:00",
-        "finished_at": "2026-11-01T12:44:04.714372+00:00",
-        "duration_seconds": 2.226
+        "started_at": "2026-11-22T22:46:51.890076+00:00",
+        "finished_at": "2026-11-22T22:46:54.747592+00:00",
+        "duration_seconds": 2.858
       }
     },
     {
@@ -843,7 +882,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261101T124405Z_dd0a5dce",
+        "run_id": "20261122T224655Z_22ea84f6",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -857,13 +896,13 @@
           "mart": 41631
         },
         "output_bytes": {
-          "raw": 22262927,
-          "clean": 602961,
-          "mart": 128369
+          "raw": 22263055,
+          "clean": 602950,
+          "mart": 128298
         },
-        "started_at": "2026-11-01T12:44:05.116088+00:00",
-        "finished_at": "2026-11-01T12:55:17.984054+00:00",
-        "duration_seconds": 672.868
+        "started_at": "2026-11-22T22:46:55.171156+00:00",
+        "finished_at": "2026-11-22T22:57:46.496404+00:00",
+        "duration_seconds": 651.325
       }
     },
     {
@@ -874,7 +913,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261101T125518Z_282924b9",
+        "run_id": "20261122T225746Z_7dc79889",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -889,12 +928,12 @@
         },
         "output_bytes": {
           "raw": 78167,
-          "clean": 12746,
-          "mart": 5759
+          "clean": 12456,
+          "mart": 5749
         },
-        "started_at": "2026-11-01T12:55:18.290029+00:00",
-        "finished_at": "2026-11-01T12:55:19.953079+00:00",
-        "duration_seconds": 1.663
+        "started_at": "2026-11-22T22:57:46.894552+00:00",
+        "finished_at": "2026-11-22T22:57:48.846512+00:00",
+        "duration_seconds": 1.952
       }
     },
     {
@@ -905,7 +944,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261101T125520Z_14372c03",
+        "run_id": "20261122T225749Z_5bd26b06",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -914,18 +953,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 7717,
-          "clean": 7717,
-          "mart": 7087
+          "raw": 7794,
+          "clean": 7794,
+          "mart": 8376
         },
         "output_bytes": {
-          "raw": 4118245,
-          "clean": 437627,
-          "mart": 159634
+          "raw": 4164859,
+          "clean": 440247,
+          "mart": 198674
         },
-        "started_at": "2026-11-01T12:55:20.249230+00:00",
-        "finished_at": "2026-11-01T12:55:33.961473+00:00",
-        "duration_seconds": 13.712
+        "started_at": "2026-11-22T22:57:49.240156+00:00",
+        "finished_at": "2026-11-22T22:58:03.685004+00:00",
+        "duration_seconds": 14.445
       }
     },
     {
@@ -936,7 +975,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261101T125534Z_ecaba08a",
+        "run_id": "20261122T225804Z_e0fdc2aa",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -952,11 +991,11 @@
         "output_bytes": {
           "raw": 6061663,
           "clean": 518479,
-          "mart": 983996
+          "mart": 984042
         },
-        "started_at": "2026-11-01T12:55:34.276536+00:00",
-        "finished_at": "2026-11-01T12:55:39.366501+00:00",
-        "duration_seconds": 5.09
+        "started_at": "2026-11-22T22:58:04.089802+00:00",
+        "finished_at": "2026-11-22T22:58:09.788238+00:00",
+        "duration_seconds": 5.698
       }
     }
   ],
