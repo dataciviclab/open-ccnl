@@ -18,7 +18,7 @@ foglio `1 - dati quantitativi`. Fogli provinciali in `ccnl-territorio`.
 | Mart | Uso |
 |---|---|
 | `mart_ccnl_serie` | serie lunga, quote, rank per anno, `pa_inclusa` |
-| `mart_ccnl_top` | ultimo dato per codice (anni misti: leggere `anno_riferimento`) |
+| `mart_ccnl_top` | ultimo dato per codice (anni misti: leggere `ultimo_anno_con_dati`) |
 | `mart_ccnl_classifica` | classifica omogenea sull'ultimo anno con PA (2024) |
 | `mart_ccnl_mercati` | sottosezione × anno |
 | `mart_ccnl_totali_anno` | totali onesti per anno + quote donne |

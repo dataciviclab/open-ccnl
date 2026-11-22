@@ -15,7 +15,7 @@ Le note operative più lunghe restano in `_local/decisions.md` (non versionato).
   per codice (non solo "Testo definitivo") e la scadenza dell'ultimo accordo che
   la dichiara.
 - **Classifiche omogenee.** `rank_nazionale` di `mart_ccnl_top` è dentro
-  `anno_riferimento` del singolo codice; per una classifica unica usare
+  `ultimo_anno_con_dati` del singolo codice; per una classifica unica usare
   `mart_ccnl_classifica`.
 - **H501 lavoro domestico**: serie che parte nel 2025; il salto datori 2024→2025
   è un cambio di perimetro, non crescita.

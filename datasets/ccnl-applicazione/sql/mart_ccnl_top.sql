@@ -55,7 +55,6 @@ prev AS (
 SELECT
     l.codice_ccnl,
     l.anno AS ultimo_anno_con_dati,
-    l.anno AS anno_riferimento,
     l.titolo,
     l.status,
     l.sottosezione,

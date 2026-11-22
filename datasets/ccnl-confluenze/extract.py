@@ -73,10 +73,6 @@ def _sheet_by_keyword(wb, *keywords: str):
     return None
 
 
-def _header_index(headers: list[str]) -> dict[str, int]:
-    return {h: i for i, h in enumerate(headers) if h}
-
-
 def extract_confluenze_riepilogativo(xlsx: bytes) -> list[dict]:
     from openpyxl import load_workbook
 

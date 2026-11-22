@@ -81,7 +81,8 @@ un issue nel repo: contribuzioni di dati, SQL e segnalazioni sono benvenute
 - F/M è disponibile solo per Uniemens (privato), dal 2023. PA e H501 non hanno
   genere in questa fonte: la quota è `NULL`, non 0%.
 - `ccnl_argomenti` copre 81 dei 88 sotto-argomenti ufficiali (7 senza accordi
-  classificati) e 4.812 accordi, non tutti i ~7.700 depositi.
+  classificati) e 4.602 accordi distinti (95.899 righe accordo×argomento), non
+  tutti i ~7.800 depositi.
 - F012 (edili): il CNEL deposita solo accordi di rinnovo, niente testo definitivo.
 
 ## Sviluppo

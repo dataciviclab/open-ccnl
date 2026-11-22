@@ -10,7 +10,7 @@ stats = argomenti_stats()
 pivot = codici_pivot()
 
 st.caption(
-    "Classificazione ufficiale CNEL su 4.812 accordi (tutte le stesure). "
+    "Classificazione ufficiale CNEL su 4.602 accordi distinti (95.899 righe). "
     "Presenza dell'argomento, non testo della clausola. "
     "La classificazione si ferma al 2023-06: i rinnovi 2024–2026 non sono coperti."
 )

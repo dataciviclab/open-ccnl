@@ -2,14 +2,14 @@
 -- Utile per join con appalti / imprese / territorio per ATECO.
 -- Attenzione: il peso n_dipendenti è del CCNL intero (non ripartito per
 -- divisione) ed è l'ultimo dato disponibile per il codice: la PA può essere
--- ferma al 2024 e il privato al 2025 (anno_riferimento lo esplicita).
+-- ferma al 2024 e il privato al 2025 (anno_ultimo_dato lo esplicita).
 
 WITH top AS (
     SELECT
         codice_ccnl,
         titolo,
         status,
-        ultimo_anno_con_dati AS anno_riferimento,
+        ultimo_anno_con_dati AS anno_ultimo_dato,
         is_conto_annuale_ppaa,
         n_dipendenti,
         n_datori,
@@ -27,7 +27,7 @@ SELECT
     a.settori_descrizione AS sezione_ateco_desc,
     t.titolo,
     t.status,
-    t.anno_riferimento,
+    t.anno_ultimo_dato,
     t.is_conto_annuale_ppaa,
     t.n_dipendenti,
     t.n_datori,

@@ -24,7 +24,7 @@ METADATA_COLS = """
     archivio VARCHAR, codice_ccnl VARCHAR, titolo_ccnl VARCHAR,
     tipologia_accordo VARCHAR, data_stipula DATE, data_decorrenza DATE,
     data_scadenza_contrattuale DATE, data_pubblicazione DATE,
-    ultimo_accordo_vigente BOOLEAN, stato_aa VARCHAR
+    ultimo_accordo_vigente BOOLEAN, stato_aa VARCHAR, id_accordo BIGINT
 """
 
 
@@ -80,7 +80,7 @@ def test_top_gender_is_null_when_fm_missing() -> None:
     assert got["PA"]["quota_dipendenti_f"] is None
     assert got["PA"]["genere_disponibile"] is False
     assert got["PA"]["is_conto_annuale_ppaa"] is True
-    assert got["PA"]["anno_riferimento"] == 2025
+    assert got["PA"]["ultimo_anno_con_dati"] == 2025
 
 
 @pytest.mark.pure_unit
@@ -152,6 +152,7 @@ def test_rinnovi_use_latest_agreement_not_only_definitive() -> None:
             dt.date(2022, 7, 1),
             True,
             "Pubblicato",
+            1,
         ),
         (
             "ARCHIVIO_CORRENTE",
@@ -164,6 +165,7 @@ def test_rinnovi_use_latest_agreement_not_only_definitive() -> None:
             dt.date(2025, 5, 1),
             True,
             "Pubblicato",
+            2,
         ),
         (
             "ARCHIVIO_CORRENTE",
@@ -176,6 +178,7 @@ def test_rinnovi_use_latest_agreement_not_only_definitive() -> None:
             dt.date(2020, 2, 1),
             True,
             "Pubblicato",
+            3,
         ),
     ]
     got = {r["codice_ccnl"]: r for r in _run("datasets/ccnl-metadata/sql/mart_ccnl_rinnovi.sql", METADATA_COLS, rows)}
@@ -185,3 +188,39 @@ def test_rinnovi_use_latest_agreement_not_only_definitive() -> None:
     assert got["B011"]["scaduto"] is False
     assert got["OLD"]["scaduto"] is True
     assert got["OLD"]["giorni_scaduto"] > 0
+
+
+@pytest.mark.pure_unit
+def test_rinnovi_tiebreaker_is_deterministic() -> None:
+    """A parità di data/tipologia/pubblicazione vince id_accordo più alto."""
+    rows = [
+        (
+            "ARCHIVIO_CORRENTE",
+            "TIE",
+            "Tie",
+            "Testo definitivo",
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 1),
+            dt.date(2027, 1, 1),
+            dt.date(2025, 1, 2),
+            True,
+            "Pubblicato",
+            100,
+        ),
+        (
+            "ARCHIVIO_CORRENTE",
+            "TIE",
+            "Tie",
+            "Testo definitivo",
+            dt.date(2025, 1, 1),
+            dt.date(2025, 1, 1),
+            dt.date(2028, 1, 1),
+            dt.date(2025, 1, 2),
+            True,
+            "Pubblicato",
+            200,
+        ),
+    ]
+    got = {r["codice_ccnl"]: r for r in _run("datasets/ccnl-metadata/sql/mart_ccnl_rinnovi.sql", METADATA_COLS, rows)}
+
+    assert got["TIE"]["data_scadenza"] == dt.date(2028, 1, 1)

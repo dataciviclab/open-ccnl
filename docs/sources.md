@@ -85,7 +85,8 @@ monitorare se entrano nell’Excel applicazione (rischio frammentazione).
 
 ### Analisi Avanzata ferma al 2023-06
 
-- Ultimo accordo classificato: **2023-06-23**; 4.812 accordi, 95.899 righe.
+- Ultimo accordo classificato: **2023-06-23**; **4.602 accordi distinti**,
+  95.899 righe accordo×argomento.
 - Accordi successivi in anagrafica: **1.039** su **630 codici**, che coprono
   **14,8M dipendenti** (2025) — il 94,6% del privato.
 - Di questi 630 codici, **396 non hanno alcuna classificazione AA** e **234

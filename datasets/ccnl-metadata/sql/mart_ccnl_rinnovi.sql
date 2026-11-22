@@ -3,7 +3,12 @@
 -- Prende l'ultimo accordo dell'archivio corrente per ogni codice su TUTTE le
 -- tipologie (non solo "Testo definitivo"): un "Accordo di rinnovo" più recente
 -- può spostare la scadenza. La data_scadenza è quella dell'ultimo accordo che
--- la dichiara (arg_max su data_stipula, ignorando i NULL).
+-- la dichiara.
+--
+-- Determinismo: a parità di data/tipologia/pubblicazione il tiebreaker è
+-- id_accordo DESC, così due run con lo stesso input danno lo stesso risultato.
+-- Nota: scaduto e giorni_scaduto dipendono da current_date: il mart cambia
+-- ogni giorno anche senza cambiare l'input.
 -- Legge solo da clean_input.
 
 WITH corrente AS (
@@ -26,7 +31,8 @@ ranked AS (
                     WHEN 'Verbale Integrativo' THEN 4
                     ELSE 5
                 END,
-                data_pubblicazione DESC NULLS LAST
+                data_pubblicazione DESC NULLS LAST,
+                id_accordo DESC
         ) AS rn
     FROM corrente
 ),
@@ -34,12 +40,19 @@ ultimo AS (
     SELECT * FROM ranked WHERE rn = 1
 ),
 scadenze AS (
-    SELECT
-        codice_ccnl,
-        arg_max(data_scadenza_contrattuale, data_stipula) AS data_scadenza
-    FROM corrente
-    WHERE data_scadenza_contrattuale IS NOT NULL
-    GROUP BY codice_ccnl
+    SELECT codice_ccnl, data_scadenza_contrattuale AS data_scadenza
+    FROM (
+        SELECT
+            codice_ccnl,
+            data_scadenza_contrattuale,
+            row_number() OVER (
+                PARTITION BY codice_ccnl
+                ORDER BY data_stipula DESC NULLS LAST, id_accordo DESC
+            ) AS rn
+        FROM corrente
+        WHERE data_scadenza_contrattuale IS NOT NULL
+    )
+    WHERE rn = 1
 )
 SELECT
     u.codice_ccnl,

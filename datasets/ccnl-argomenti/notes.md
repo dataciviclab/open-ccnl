@@ -15,7 +15,8 @@ classificate su ciascun argomento. Runtime atteso 1-3 minuti.
 
 ## Perimetro e limiti
 
-- **4.812 accordi** con AA pubblicata (non tutti i ~7.700 depositi in anagrafica).
+- **4.602 accordi distinti** con AA pubblicata (95.899 righe accordo×argomento;
+  non tutti i ~7.800 depositi in anagrafica).
 - **81 sotto-argomenti con almeno un accordo** sui 88 della tassonomia (7 vuoti).
 - Classificazione su **tutte le stesure**, non solo testi definitivi:
   un codice può comparire N volte (es. H011: decine di versioni).

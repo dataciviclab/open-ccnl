@@ -84,7 +84,6 @@ mart:
         required_columns:
           - codice_ccnl
           - ultimo_anno_con_dati
-          - anno_riferimento
           - n_dipendenti
           - rank_nazionale
           - genere_disponibile
