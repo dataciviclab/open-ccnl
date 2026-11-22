@@ -13,13 +13,14 @@ grafo delle confluenze tra contratti.
 
 | Dataset | Righe | Periodo | Contenuto |
 |---|---:|---|---|
-| `ccnl_metadata` | ~7.700 | storico + corrente | Accordi depositati: codici, date, firmatari, ATECO |
-| `ccnl_applicazione` | ~13.200 | 2018–2025 | Datori e dipendenti per CCNL × anno (F/M dal 2023) |
-| `ccnl_territorio` | ~166.000 | 2023–2025 | Dipendenti per provincia × genere × CCNL |
+| `ccnl_metadata` | ~7.800 | storico + corrente | Accordi depositati: codici, date, firmatari, ATECO |
+| `ccnl_applicazione` | ~13.200 | 2018–2025 | Datori e dipendenti per CCNL × anno (F/M dal 2023, solo privato) |
+| `ccnl_territorio` | ~166.000 | 2023–2025 | Dipendenti per provincia × genere × CCNL (solo Uniemens) |
 | `ccnl_confluenze` | ~610 | — | Mappa confluenze: quale codice storico è confluito dove |
 
-+ 12 mart analitici (ranking nazionali, serie storiche, quote di genere,
-intelligenza contrattuale composta). Fonte: [CNEL Archivio Contratti](https://www.cnel.it/archivio-contratti/contratti-open-data)
++ 19 mart analitici (ranking omogenei, serie storiche, quote di genere,
+totali per anno, radar rinnovi, intelligence contrattuale composta). Fonte:
+[CNEL Archivio Contratti](https://www.cnel.it/archivio-contratti/contratti-open-data)
 — Italian Open Data License v2.0.
 
 ## Esempi di domande
@@ -29,6 +30,26 @@ intelligenza contrattuale composta). Fonte: [CNEL Archivio Contratti](https://ww
 - Quali CCNL hanno superato la scadenza contrattuale e quanti lavoratori restano sotto quelle regole?
 - Come si sono fusi i codici contrattuali storici nei vigenti (grafo confluenze)?
 - Quante donne e uomini copre ogni contratto, per provincia?
+
+## Universo dei dati (leggere prima dei totali)
+
+- **2025 non è un anno completo**: la PA (codici `S*`, Conto Annuale RGS) non è
+  ancora pubblicata. Nel 2025 il dataset nazionale copre solo Uniemens/privato
+  (~15,7M); nel 2024 copre privato + PA (~18,1M). Usare il **2024** per totali,
+  quote e confronti; il mart `mart_ccnl_classifica` è già ancorato all'ultimo
+  anno con PA.
+- **H501 lavoro domestico** compare solo dal 2025 (523k dipendenti e 523k
+  datori): il salto dei datori nel 2025 è un cambio di perimetro, non crescita.
+- **Genere**: F/M esiste solo per Uniemens (privato). La PA non ha dettaglio di
+  genere in questa fonte: le quote sono `NULL`, non 0%. Per la PA usare
+  `dipendenti_pubblici` (Conto Annuale, 60,2% donne nel 2024).
+- **Territorio vs nazionale**: il territorio include aggregati non-CCNL
+  (`CPUB`, `CDIV`) e non ha il dettaglio PA né H501; il nazionale include la PA
+  ma non quei aggregati. I due totali non sono sommabili.
+- **Province**: la fonte usa la geografia pre-2016 (CI, OG, OT, VS) e include
+  ESTERO.
+
+Dettaglio in [`docs/decisions.md`](docs/decisions.md).
 
 ## Come accedere
 
@@ -54,8 +75,14 @@ un issue nel repo: contribuzioni di dati, SQL e segnalazioni sono benvenute
 
 - Il campo `dipendenti` dell'API JSON è quasi sempre `null`: le metriche stanno
   nell'Excel applicazione (Uniemens + conto annuale PPAA per la PA).
-- Alcuni CCNL PA hanno dipendenti Uniemens = 0: il dato è sul conto annuale.
-- 2025 può essere parziale (media 12 mesi a chiusura estrazione).
+- I CCNL PA hanno dipendenti Uniemens = 0: il dato è nel Conto Annuale RGS.
+  Nel 2025 il Conto Annuale non è disponibile: i codici `S*` sono a 0.
+- H501 (lavoro domestico) è popolato solo dal 2025; prima il codice è a 0.
+- F/M è disponibile solo per Uniemens (privato), dal 2023. PA e H501 non hanno
+  genere in questa fonte: la quota è `NULL`, non 0%.
+- `ccnl_argomenti` copre 81 dei 88 sotto-argomenti ufficiali (7 senza accordi
+  classificati) e 4.602 accordi distinti (95.899 righe accordo×argomento), non
+  tutti i ~7.800 depositi.
 - F012 (edili): il CNEL deposita solo accordi di rinnovo, niente testo definitivo.
 
 ## Sviluppo
@@ -64,7 +91,8 @@ un issue nel repo: contribuzioni di dati, SQL e segnalazioni sono benvenute
 uv pip install -e ".[pipeline,dev]" --system
 make check   # preflight config
 make run     # scarica + clean + mart
-make test    # contratti config + logica extract
+make lint    # ruff
+make test    # contratti config + logica extract + semantica mart
 ```
 
 Licenza del codice: [MIT](LICENSE). Licenza dei dati CNEL: IODL v2.0.

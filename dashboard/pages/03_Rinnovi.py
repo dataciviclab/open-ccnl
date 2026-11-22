@@ -3,7 +3,6 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-
 from sources import fmt_num, intelligence, rinnovi
 
 st.title("⏰ Radar dei rinnovi contrattuali")
@@ -14,13 +13,11 @@ tab = ren.merge(df, on="codice_ccnl", how="left")
 tab["n_dipendenti"] = tab["n_dipendenti"].fillna(0).astype(int)
 tab["data_scadenza"] = pd.to_datetime(tab["data_scadenza"], errors="coerce")
 
-oggi = pd.Timestamp.today().normalize()
-scaduti = tab[tab["data_scadenza"] < oggi].copy()
-scaduti["giorni_scaduto"] = (oggi - scaduti["data_scadenza"]).dt.days
+scaduti = tab[tab["scaduto"] == True].copy()  # noqa: E712
 scaduti = scaduti.sort_values("n_dipendenti", ascending=False)
 
 k1, k2, k3, k4 = st.columns(4)
-k1.metric("Ultimi testi definitivi", fmt_num(len(tab)))
+k1.metric("CCNL con ultimo accordo", fmt_num(len(tab)))
 k2.metric("…con scadenza nota", fmt_num(int(tab["data_scadenza"].notna().sum())))
 k3.metric("Di cui scaduti", fmt_num(len(scaduti)))
 k4.metric(
@@ -93,6 +90,7 @@ show = scaduti.head(30)[
     [
         "codice_ccnl",
         "titolo_ccnl",
+        "tipologia_ultimo_accordo",
         "ultima_stipula",
         "data_scadenza",
         "giorni_scaduto",
@@ -102,6 +100,7 @@ show = scaduti.head(30)[
     columns={
         "codice_ccnl": "codice",
         "titolo_ccnl": "titolo",
+        "tipologia_ultimo_accordo": "ultimo accordo",
         "ultima_stipula": "stipula",
         "data_scadenza": "scadenza",
         "giorni_scaduto": "giorni da scadenza",

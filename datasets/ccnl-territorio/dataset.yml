@@ -6,7 +6,7 @@ dataset:
   source_id: "cnel_archivio"
   tags: [welfare-lavoro, ccnl, cnel, territorio, provincia, uniemens]
   category: welfare-lavoro
-  description: "Applicazione CCNL per provincia e genere (INPS Uniemens) — fogli provinciali 2023-2025."
+  description: "Applicazione CCNL per provincia e genere (INPS Uniemens) — fogli provinciali 2023-2025. Solo privato; aggregati CPUB/CDIV non-CCNL."
   years: [2026]
   time_coverage:
     start_year: 2023

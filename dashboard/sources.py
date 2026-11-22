@@ -10,10 +10,13 @@ from __future__ import annotations
 from pathlib import Path
 
 import streamlit as st
-
 from lab_connectors.duckdb.queries import (
     detect_local_root,
+)
+from lab_connectors.duckdb.queries import (
     load_mart_table as _load_mart_table,
+)
+from lab_connectors.duckdb.queries import (
     query_clean as _query_clean,
 )
 
@@ -52,6 +55,18 @@ def intelligence():
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
+def totali_anno():
+    """Totali per anno con flag pa_inclusa e quote donne corrette."""
+    return load_mart(SLUG_APPLICAZIONE, "mart_ccnl_totali_anno")
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def classifica():
+    """Classifica omogenea sull'ultimo anno con PA."""
+    return load_mart(SLUG_APPLICAZIONE, "mart_ccnl_classifica")
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
 def argomenti_stats():
     return load_mart(SLUG_ARGOMENTI, "mart_argomenti_stats")
 
@@ -80,32 +95,16 @@ def province():
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def rinnovi():
-    """Ultimo testo definitivo per codice con scadenza + peso Uniemens.
-
-    Nota: niente CTE top-level — query_clean wrappa con un suo WITH.
-    """
-    sql = """
-    SELECT
-        codice_ccnl,
-        data_stipula AS ultima_stipula,
-        data_scadenza_contrattuale AS data_scadenza,
-        titolo_ccnl
-    FROM clean_input
-    WHERE tipologia_accordo = 'Testo definitivo'
-      AND archivio = 'ARCHIVIO_CORRENTE'
-      AND codice_ccnl IS NOT NULL
-    QUALIFY row_number() OVER (
-        PARTITION BY codice_ccnl
-        ORDER BY data_stipula DESC NULLS LAST
-    ) = 1
-    """
-    return query_clean(SLUG_METADATA, sql)
+    """Radar rinnovi: ultimo accordo per codice su tutte le tipologie."""
+    return load_mart(SLUG_METADATA, "mart_ccnl_rinnovi")
 
 
 from lab_connectors.formatters import fmt_eur, fmt_num, fmt_pct  # noqa: E402
 
 __all__ = [
     "intelligence",
+    "totali_anno",
+    "classifica",
     "argomenti_stats",
     "codici_pivot",
     "rinnovi",

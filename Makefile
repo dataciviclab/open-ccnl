@@ -58,6 +58,10 @@ registry-write:
 test:
 	pytest -q
 
+.PHONY: lint
+lint:
+	ruff check .
+
 .PHONY: help
 help:
 	@grep -E '^[a-zA-Z_-]+:' Makefile | sort

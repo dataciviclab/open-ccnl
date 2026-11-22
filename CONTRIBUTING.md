@@ -37,7 +37,7 @@ Output in `out/` (non committare).
 
 ## CI
 
-- `ci.yml`: test (`make test`) su push/PR + preflight config dataset sulle PR.
+- `ci.yml`: lint (`make lint`) + test (`make test`) su push/PR + preflight config dataset sulle PR.
 - `pipeline.yml`: run completo post-merge + refresh mensile (reusable org).
 
 ## Fonti

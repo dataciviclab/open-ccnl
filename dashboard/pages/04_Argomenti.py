@@ -1,21 +1,18 @@
 """Argomenti — cosa coprono i CCNL secondo la classificazione ufficiale CNEL."""
 
-import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import streamlit as st
-
-from sources import argomenti_stats, codici_pivot, intelligence
+from sources import argomenti_stats, classifica, codici_pivot
 
 st.title("📑 Copertura argomenti (Analisi Avanzata CNEL)")
 
 stats = argomenti_stats()
 pivot = codici_pivot()
-df = intelligence()
 
 st.caption(
-    "Classificazione ufficiale CNEL su 4.812 accordi (tutte le stesure). "
-    "Presenza dell'argomento, non testo della clausola."
+    "Classificazione ufficiale CNEL su 4.602 accordi distinti (95.899 righe). "
+    "Presenza dell'argomento, non testo della clausola. "
+    "La classificazione si ferma al 2023-06: i rinnovi 2024–2026 non sono coperti."
 )
 
 k1, k2, k3 = st.columns(3)
@@ -65,7 +62,8 @@ LABELS = {
     "SR1": "malattia",
     "OR1": "orario",
 }
-with_dip = df[df["n_dipendenti"].fillna(0) > 0].nlargest(12, "n_dipendenti")
+with_dip = classifica()
+with_dip = with_dip[with_dip["n_dipendenti"].fillna(0) > 0].nlargest(12, "n_dipendenti")
 p = pivot[pivot["codice_ccnl"].isin(with_dip["codice_ccnl"])][["codice_ccnl"] + KEY]
 m = (
     with_dip[["codice_ccnl", "titolo"]]

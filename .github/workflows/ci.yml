@@ -31,6 +31,7 @@ jobs:
       - uses: dataciviclab/.github/actions/python-setup@main
         with:
           extras: "dev"
+      - run: make lint
       - run: make test
 
   detect:

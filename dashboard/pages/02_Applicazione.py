@@ -2,8 +2,7 @@
 
 import plotly.express as px
 import streamlit as st
-
-from sources import SLUG_APPLICAZIONE, fmt_num, intelligence, mercati, query_clean
+from sources import fmt_num, intelligence, mercati, totali_anno
 
 st.title("👥 Applicazione dei CCNL")
 
@@ -33,19 +32,15 @@ with tab1:
         hovertemplate="<b>%{customdata[0]}</b><br>quote F: %{x:.1%}<br>dipendenti: %{customdata[1]:,.0f}<extra></extra>",
     )
     st.plotly_chart(fig, width="stretch")
-    st.caption("Solo CCNL con dato F/M disponibile (dal 2023).")
+    st.caption(
+        "Solo CCNL con dettaglio F/M (Uniemens, dal 2023). PA e lavoro domestico "
+        "sono esclusi: il loro genere è nel Conto Annuale, non qui."
+    )
 
 with tab2:
     st.subheader("Dipendenti totali per anno")
-    serie = query_clean(
-        SLUG_APPLICAZIONE,
-        """
-        SELECT anno, sum(n_dipendenti) AS n_dipendenti
-        FROM clean_input
-        GROUP BY anno
-        ORDER BY anno
-        """,
-    )
+    tot = totali_anno()
+    serie = tot[["anno", "n_dipendenti"]].sort_values("anno")
     if serie.empty:
         st.info("Serie non disponibile.")
     else:
@@ -53,10 +48,12 @@ with tab2:
         fig2.update_layout(height=360, margin={"t": 10, "b": 30}, yaxis_tickformat=",")
         fig2.update_traces(line_color="#6366f1", hovertemplate="%{y:,.0f}<extra></extra>")
         st.plotly_chart(fig2, width="stretch")
+        completo = tot[tot["pa_inclusa"]].sort_values("anno").iloc[-1]
         st.caption(
-            f"Totale ultimo anno ({int(serie['anno'].max())}): "
-            f"{fmt_num(int(serie['n_dipendenti'].max()))} dipendenti · "
-            "2025 può essere parziale."
+            f"Ultimo anno con PA inclusa ({int(completo['anno'])}): "
+            f"{fmt_num(int(completo['n_dipendenti']))} dipendenti. "
+            "Il 2025 è pubblicato ma senza PA (Conto Annuale non disponibile): "
+            "il calo non è occupazionale."
         )
 
 with tab3:

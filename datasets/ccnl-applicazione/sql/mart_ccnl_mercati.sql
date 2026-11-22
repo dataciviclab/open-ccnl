@@ -10,9 +10,11 @@ SELECT
     sum(COALESCE(n_datori, 0)) AS n_datori,
     sum(COALESCE(n_dipendenti_f, 0)) AS n_dipendenti_f,
     sum(COALESCE(n_dipendenti_m, 0)) AS n_dipendenti_m,
+    (sum(COALESCE(n_dipendenti_f, 0)) + sum(COALESCE(n_dipendenti_m, 0)) > 0) AS genere_disponibile,
     CASE
-        WHEN sum(COALESCE(n_dipendenti, 0)) > 0
-            THEN sum(COALESCE(n_dipendenti_f, 0))::DOUBLE / sum(COALESCE(n_dipendenti, 0))
+        WHEN sum(COALESCE(n_dipendenti_f, 0)) + sum(COALESCE(n_dipendenti_m, 0)) > 0
+            THEN sum(COALESCE(n_dipendenti_f, 0))::DOUBLE
+                 / (sum(COALESCE(n_dipendenti_f, 0)) + sum(COALESCE(n_dipendenti_m, 0)))
     END AS quota_dipendenti_f
 FROM clean_input
 GROUP BY anno, nullif(trim(sottosezione), '')

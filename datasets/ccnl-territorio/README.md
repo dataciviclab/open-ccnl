@@ -32,7 +32,9 @@ Join naturale: `(codice_ccnl, anno)`.
 
 ## Cave
 
-- Uniemens ≠ conto annuale PA: territorio PA va usato con prudenza
-- H501 domestico: coverage geografica atipica
-- 2025 può essere parziale
+- Uniemens ≠ conto annuale PA: il territorio non ha il dettaglio PA.
+- `CPUB` e `CDIV` sono aggregati non-CCNL: non sommarli ai codici.
+- H501 domestico: **assente** dal territorio (nessuna copertura geografica).
+- 2025 è completo per il privato; la PA non è in questa fonte.
+- Geografia pre-2016: `CI`, `OG`, `OT`, `VS` soppresse; `EE` = ESTERO.
 - Griglia: righe sparse (non full cross product) — i 0 nel raw sono assenze reali/spurie
