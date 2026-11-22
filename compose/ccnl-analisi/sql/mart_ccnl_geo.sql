@@ -1,18 +1,27 @@
--- Compose intelligence — top province per i principali CCNL (ultimo anno con dati).
--- Support: applicazione (top), territorio (mart_ccnl_provincia).
+-- Compose intelligence — top province per i principali CCNL.
+-- Usa la classifica omogenea sull'ultimo anno con PA (mart_ccnl_classifica)
+-- e lo stesso anno per il territorio. La PA non ha dettaglio provinciale in
+-- questa fonte: i CCNL del conto annuale non compaiono nel join.
+-- Support: applicazione (classifica), territorio (mart_ccnl_provincia).
 
-WITH top AS (
-    SELECT codice_ccnl, titolo, n_dipendenti, rank_nazionale, ultimo_anno_con_dati
-    FROM read_parquet('{support.applicazione.mart.mart_ccnl_top}')
-    WHERE ultimo_anno_con_dati = 2025
-      AND rank_nazionale <= 30
+WITH rif AS (
+    SELECT max(anno_riferimento) AS anno
+    FROM read_parquet('{support.applicazione.mart.mart_ccnl_classifica}')
+),
+top AS (
+    SELECT c.*
+    FROM read_parquet('{support.applicazione.mart.mart_ccnl_classifica}') c, rif
+    WHERE c.anno_riferimento = rif.anno
+      AND c.rank_nazionale <= 30
 ),
 prov AS (
-    SELECT * FROM read_parquet('{support.territorio.mart.mart_ccnl_provincia}')
-    WHERE anno = 2025
+    SELECT p.*
+    FROM read_parquet('{support.territorio.mart.mart_ccnl_provincia}') p, rif
+    WHERE p.anno = rif.anno
 ),
 ranked AS (
     SELECT
+        t.anno_riferimento,
         t.codice_ccnl,
         t.titolo,
         t.n_dipendenti AS n_dipendenti_nazionali,
@@ -31,6 +40,7 @@ ranked AS (
     JOIN prov p ON t.codice_ccnl = p.codice_ccnl
 )
 SELECT
+    anno_riferimento,
     codice_ccnl,
     titolo,
     n_dipendenti_nazionali,

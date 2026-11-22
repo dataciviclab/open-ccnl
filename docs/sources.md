@@ -17,6 +17,24 @@ Tipi utilizzati in v0:
 
 Altri tipi disponibili (non in v0): ARAN decentrati, accordi Governo/parti sociali, quadro, interconfederali, solidarietà.
 
+## Copertura archivio (verifica 2026-11-22)
+
+| type | Accordi | In open-ccnl |
+|---|---:|---|
+| `ARCHIVIO_CORRENTE` | 2.331 | sì |
+| `ARCHIVIO_STORICO` | 5.463 | sì |
+| `ACCORDI_INTERCONFEDERALI` | 502 | no |
+| `CONTRATTI_QUADRO` | 87 | no |
+| `ACCORDI_GOVERNO_PARTI_SOCIALI` | 47 | no |
+| `CONTRATTI_SOLIDARIETA` | 1.414 | no |
+| `ARAN_DECENTRATI_PUBBLICO_NAZIONALE` | 2.155 | no |
+| `PRE_ARAN_DECENTRATI_PUBBLICO` | 37.494 | no |
+| `PRE_ARAN_DECENTRATI_PUBBLICO_NAZIONALE` | 281 | no |
+
+I tipi non in v0 sono ~42k accordi: granularità e schema diversi (decentrato,
+aziendale, interconfederale). Candidati a un dataset separato
+(`ccnl_altri_accordi`), non a un'unione in `ccnl_metadata`.
+
 Risposta: `{"data": [ ... ]}`. Campo `dipendenti` quasi sempre `null`.
 
 ## Excel metriche e grafo

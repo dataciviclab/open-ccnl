@@ -1,8 +1,17 @@
 -- Compose intelligence — 1 riga per CCNL: peso + anagrafica + storia + copertura AA.
--- Support: applicazione (mart_ccnl_top), metadata (mart_ccnl_codici), confluenze, argomenti.
+-- Support: applicazione (mart_ccnl_top, mart_ccnl_classifica), metadata,
+-- confluenze, argomenti.
+--
+-- Anno di riferimento: l'ultimo anno in cui la PA ha dati (mart_ccnl_classifica).
+-- rank_nazionale/quota_dipendenti sono calcolati su quell'anno, in modo
+-- omogeneo. rank_nazionale_ultimo_dato resta il rank dentro l'ultimo anno
+-- disponibile per il singolo codice (per la PA è il 2024, per il privato 2025).
 
 WITH top AS (
     SELECT * FROM read_parquet('{support.applicazione.mart.mart_ccnl_top}')
+),
+classifica AS (
+    SELECT * FROM read_parquet('{support.applicazione.mart.mart_ccnl_classifica}')
 ),
 codici AS (
     SELECT * FROM read_parquet('{support.metadata.mart.mart_ccnl_codici}')
@@ -29,28 +38,27 @@ argomenti AS (
         max(CASE WHEN codice_argomento = 'RS8' THEN 1 ELSE 0 END) AS aa_bilaterali
     FROM read_parquet('{support.argomenti.mart.mart_codici_argomenti}')
     GROUP BY codice_ccnl
-),
-tot_2025 AS (
-    SELECT sum(n_dipendenti) AS tot
-    FROM top
-    WHERE ultimo_anno_con_dati = 2025
 )
 SELECT
     t.codice_ccnl,
     t.ultimo_anno_con_dati,
+    cl.anno_riferimento,
+    cl.n_dipendenti AS n_dipendenti_riferimento,
     t.titolo,
     t.status,
     t.sottosezione,
+    t.is_conto_annuale_ppaa,
     t.n_dipendenti,
     t.n_datori,
     t.n_dipendenti_f,
     t.n_dipendenti_m,
-    t.quota_dipendenti_f,
-    CASE
-        WHEN t.ultimo_anno_con_dati = 2025 AND tt.tot > 0
-            THEN t.n_dipendenti::DOUBLE / tt.tot
-    END AS quota_dipendenti,
-    t.rank_nazionale,
+    t.genere_disponibile,
+    t.quota_dipendenti_f AS quota_dipendenti_f_ultimo_dato,
+    cl.quota_dipendenti_f AS quota_dipendenti_f,
+    cl.quota_dipendenti_anno AS quota_dipendenti,
+    cl.totale_dipendenti_anno,
+    t.rank_nazionale AS rank_nazionale_ultimo_dato,
+    cl.rank_nazionale AS rank_nazionale,
     t.anno_precedente,
     t.n_dipendenti_precedente,
     t.delta_dipendenti,
@@ -84,7 +92,7 @@ SELECT
         ELSE 'F_zero_o_assente'
     END AS fascia_peso
 FROM top t
-CROSS JOIN tot_2025 tt
+LEFT JOIN classifica cl ON t.codice_ccnl = cl.codice_ccnl
 LEFT JOIN codici c ON t.codice_ccnl = c.codice_ccnl
 LEFT JOIN ateco_agg a ON t.codice_ccnl = a.codice_ccnl
 LEFT JOIN storie s ON t.codice_ccnl = s.codice_vigente

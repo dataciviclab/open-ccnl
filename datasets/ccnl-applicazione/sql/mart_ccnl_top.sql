@@ -1,5 +1,12 @@
--- CNEL applicazione — MART analitico: contratti "pesanti" e chi li guadagna/perde.
--- Ultimo anno con dati per ogni codice + confronto con l'anno precedente utile.
+-- CNEL applicazione — MART analitico: ultimo dato disponibile per codice.
+--
+-- ATTENZIONE: una riga per codice, con l'ultimo anno in cui il codice ha
+-- dipendenti. Anni diversi convivono nello stesso mart (es. PA ferma al 2024
+-- e privato al 2025): per classifiche omogenee usare mart_ccnl_classifica.
+-- rank_nazionale è calcolato DENTRO ultimo_anno_con_dati, non sul totale.
+--
+-- quota_dipendenti_f = F / (F+M), NULL quando F e M sono entrambi assenti
+-- (PA/conto annuale e lavoro domestico): 0% è un dato reale, non un missing.
 -- Legge solo da clean_input.
 
 WITH with_data AS (
@@ -9,6 +16,7 @@ WITH with_data AS (
         any_value(titolo) AS titolo,
         any_value(status) AS status,
         any_value(sottosezione) AS sottosezione,
+        bool_or(is_conto_annuale_ppaa) AS is_conto_annuale_ppaa,
         max(n_dipendenti) AS n_dipendenti,
         max(n_datori) AS n_datori,
         max(n_dipendenti_f) AS n_dipendenti_f,
@@ -47,18 +55,20 @@ prev AS (
 SELECT
     l.codice_ccnl,
     l.anno AS ultimo_anno_con_dati,
+    l.anno AS anno_riferimento,
     l.titolo,
     l.status,
     l.sottosezione,
+    l.is_conto_annuale_ppaa,
     l.n_dipendenti,
     l.n_datori,
     l.n_dipendenti_f,
     l.n_dipendenti_m,
+    (COALESCE(l.n_dipendenti_f, 0) + COALESCE(l.n_dipendenti_m, 0) > 0) AS genere_disponibile,
     CASE
-        WHEN l.n_dipendenti_f IS NOT NULL
-         AND l.n_dipendenti_m IS NOT NULL
-         AND l.n_dipendenti > 0
-            THEN l.n_dipendenti_f::DOUBLE / l.n_dipendenti
+        WHEN COALESCE(l.n_dipendenti_f, 0) + COALESCE(l.n_dipendenti_m, 0) > 0
+            THEN l.n_dipendenti_f::DOUBLE
+                 / (l.n_dipendenti_f + l.n_dipendenti_m)
     END AS quota_dipendenti_f,
     p.anno AS anno_precedente,
     p.n_dipendenti AS n_dipendenti_precedente,

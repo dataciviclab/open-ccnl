@@ -1,15 +1,20 @@
 -- Compose intelligence — 1 riga = CCNL × sezione ATECO, con peso.
 -- Utile per join con appalti / imprese / territorio per ATECO.
--- Attenzione: il peso n_dipendenti è del CCNL intero (non ripartito per divisione).
+-- Attenzione: il peso n_dipendenti è del CCNL intero (non ripartito per
+-- divisione) ed è l'ultimo dato disponibile per il codice: la PA può essere
+-- ferma al 2024 e il privato al 2025 (anno_riferimento lo esplicita).
 
 WITH top AS (
     SELECT
         codice_ccnl,
         titolo,
         status,
+        ultimo_anno_con_dati AS anno_riferimento,
+        is_conto_annuale_ppaa,
         n_dipendenti,
         n_datori,
         rank_nazionale,
+        genere_disponibile,
         quota_dipendenti_f
     FROM read_parquet('{support.applicazione.mart.mart_ccnl_top}')
 ),
@@ -22,9 +27,12 @@ SELECT
     a.settori_descrizione AS sezione_ateco_desc,
     t.titolo,
     t.status,
+    t.anno_riferimento,
+    t.is_conto_annuale_ppaa,
     t.n_dipendenti,
     t.n_datori,
     t.rank_nazionale,
+    t.genere_disponibile,
     t.quota_dipendenti_f,
     a.n_stesure,
     a.ultimo_deposito,

@@ -110,3 +110,89 @@ def test_argomenti_trim_date_and_row_mapping() -> None:
     assert row["data_decorrenza"] == ""
     assert row["settori_ateco"] == "E;E01"
     assert row["ultimo_accordo_vigente"] == "true"
+
+
+@pytest.mark.pure_unit
+@pytest.mark.parametrize(
+    "header",
+    [
+        (
+            "CCNL confluito - cod",
+            "CCNL vigente in cui è confluito - cod",
+            "CCNL confluito - titolo",
+            "CCNL vigente - titolo",
+            "Sezione Ateco",
+            "Sezione Ateco - desc",
+            "Inizio storia",
+            "Fine storia",
+        ),
+        (
+            "Sezione Ateco",
+            "Sezione Ateco - Desc",
+            "CCNL id confluito",
+            "Inizio storia CCNL",
+            "Fine storia CCNL",
+            "CCNL confluito - titolo",
+            "CCNL confluito - fimratari datoriali",
+            "CCNL confluito - firmatari sindacali",
+            "CCNL id vigente",
+            "CCNL vigente - titolo",
+            "CCNL vigente - firmatari datoriali",
+            "CCNL vigente - firmatari sindacali",
+        ),
+    ],
+)
+def test_confluenze_storici_header_variants(header: tuple[str, ...]) -> None:
+    """Il file CNEL ha cambiato header (cod -> id) senza preavviso."""
+    from io import BytesIO
+
+    from openpyxl import Workbook
+
+    mod = _load(
+        "extract_confluenze",
+        REPO / "datasets" / "ccnl-confluenze" / "extract.py",
+    )
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Elenco CCNL"
+    ws.append(header)
+    if "CCNL id confluito" in header:
+        ws.append(
+            [
+                "E",
+                "Fornitura acqua",
+                "K531",
+                "1991-10-26",
+                "2024-07-09",
+                "FISE",
+                "",
+                "",
+                "K540",
+                "Servizi ambientali",
+                "",
+                "",
+            ]
+        )
+    else:
+        ws.append(
+            [
+                "K531",
+                "K540",
+                "FISE",
+                "Servizi ambientali",
+                "E",
+                "Fornitura acqua",
+                "1991-10-26",
+                "2024-07-09",
+            ]
+        )
+    buf = BytesIO()
+    wb.save(buf)
+    rows = mod.extract_storici(buf.getvalue())
+
+    assert len(rows) == 1
+    assert rows[0]["codice_confluito"] == "K531"
+    assert rows[0]["codice_vigente"] == "K540"
+    assert rows[0]["sezione_ateco"] == "E"
+    assert rows[0]["inizio_storia"] == "1991-10-26"
+    assert rows[0]["fine_storia"] == "2024-07-09"

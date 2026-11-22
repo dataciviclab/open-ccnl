@@ -16,8 +16,11 @@ classificate su ciascun argomento. Runtime atteso 1-3 minuti.
 ## Perimetro e limiti
 
 - **4.812 accordi** con AA pubblicata (non tutti i ~7.700 depositi in anagrafica).
+- **81 sotto-argomenti con almeno un accordo** sui 88 della tassonomia (7 vuoti).
 - Classificazione su **tutte le stesure**, non solo testi definitivi:
   un codice può comparire N volte (es. H011: decine di versioni).
+- La copertura temporale dei dati si ferma al 2023-06 (la tassonomia è più
+  avanti della classificazione pubblicata).
 - Dettagli per-accordo (html/tree clausole) sono back-office, non open:
   qui arriva la **presenza** dell'argomento, non il testo della clausola.
 - Stessa classe di stabilità dell'API open data CNEL (documentare in

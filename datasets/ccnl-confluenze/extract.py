@@ -91,7 +91,6 @@ def extract_confluenze_riepilogativo(xlsx: bytes) -> list[dict]:
 
     rows_iter = ws.iter_rows(values_only=True)
     header = [_norm(h).lower() for h in (next(rows_iter) or ())]
-    idx = _header_index(header)
 
     def col(*frags: str) -> int | None:
         for i, h in enumerate(header):
@@ -143,7 +142,6 @@ def extract_storici(xlsx: bytes) -> list[dict]:
 
     rows_iter = ws.iter_rows(values_only=True)
     header = [_norm(h).lower() for h in (next(rows_iter) or ())]
-    idx = _header_index(header)
 
     def col(*frags: str) -> int | None:
         for i, h in enumerate(header):
@@ -151,15 +149,37 @@ def extract_storici(xlsx: bytes) -> list[dict]:
                 return i
         return None
 
-    i_from = col("confluito", "cod")
-    i_to = col("vigente", "cod")
+    def find(*, all_of: tuple[str, ...] = (), any_of: tuple[str, ...] = (), none_of: tuple[str, ...] = ()) -> int | None:
+        """Colonna robusta ai cambi di header (es. 'cod' -> 'id')."""
+        for i, h in enumerate(header):
+            if not all(f in h for f in all_of):
+                continue
+            if any_of and not any(f in h for f in any_of):
+                continue
+            if any(f in h for f in none_of):
+                continue
+            return i
+        return None
+
+    # Header 2026: "CCNL id confluito" / "CCNL id vigente".
+    # Header precedente: "CCNL confluito - cod" / "CCNL vigente in cui è confluito - cod".
+    i_from = find(
+        all_of=("confluito",),
+        any_of=("cod", "id"),
+        none_of=("titolo", "firmatari", "vigente"),
+    )
+    i_to = find(
+        all_of=("vigente",),
+        any_of=("cod", "id"),
+        none_of=("titolo", "firmatari"),
+    )
     i_t_from = col("confluito", "titolo")
     i_t_to = col("vigente", "titolo")
-    i_at = col("sezione", "ateco")
-    i_atd = col("sezione", "ateco", "desc")
+    i_at = find(all_of=("sezione", "ateco"), none_of=("desc",))
+    i_atd = find(all_of=("sezione", "ateco", "desc"))
     i_start = col("inizio")
     i_end = col("fine")
-    if i_from is None:
+    if i_from is None or i_to is None:
         raise RuntimeError(f"Colonne storici non riconosciute: {header}")
 
     out: list[dict] = []

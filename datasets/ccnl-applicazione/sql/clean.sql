@@ -15,6 +15,7 @@ SELECT
     cast_bigint(n_dipendenti_f) AS n_dipendenti_f,
     cast_bigint(n_dipendenti_m) AS n_dipendenti_m,
     normalize_string(filtri_conto_annuale_ppaa) AS filtri_conto_annuale_ppaa,
+    (nullif(trim(filtri_conto_annuale_ppaa), '') IS NOT NULL) AS is_conto_annuale_ppaa,
     normalize_string(fonte_note) AS fonte_note
 FROM raw_input
 WHERE codice_ccnl IS NOT NULL

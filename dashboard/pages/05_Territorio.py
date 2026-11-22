@@ -1,9 +1,7 @@
 """Territorio — dove si concentrano i dipendenti coperti da CCNL."""
 
-import pandas as pd
 import plotly.express as px
 import streamlit as st
-
 from sources import TERRITORIO_ANNO, fmt_num, province, regioni
 
 st.title("🗺️ Territorio")
@@ -116,5 +114,6 @@ else:
 
 st.caption(
     f"Fonte: dipendenti Uniemens per provincia × genere ({TERRITORIO_ANNO - 2}–{TERRITORIO_ANNO}). "
-    "PA con conto annuale può essere sotto-rappresentata."
+    "Solo privato: la PA non è in questa fonte. CPUB/CDIV sono aggregati non-CCNL; "
+    "ESTERO è incluso e 4 sigle sarde sono pre-2016."
 )

@@ -1,7 +1,7 @@
 # DataCivicLab — open-ccnl
 name: open-ccnl
 kind: dataset-project
-status: experimental-local
+status: public-exploration
 description: >
   Archivio nazionale CCNL (CNEL): anagrafica (API open data), metriche di
   applicazione Uniemens/INPS, territorio e grafo confluenze. Pipeline

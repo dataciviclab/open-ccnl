@@ -50,7 +50,9 @@ mart:
       mart_ccnl_intelligence:
         required_columns:
           - codice_ccnl
+          - anno_riferimento
           - n_dipendenti
+          - n_dipendenti_riferimento
           - rank_nazionale
           - quota_dipendenti
           - n_stesure
@@ -70,6 +72,7 @@ mart:
         min_rows: 100
       mart_ccnl_geo:
         required_columns:
+          - anno_riferimento
           - codice_ccnl
           - sigla_provincia
           - n_dipendenti_provincia

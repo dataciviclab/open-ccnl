@@ -6,7 +6,7 @@ Join analitico dei tre dataset sibling in due mart pronti all’uso.
 
 | name | dataset | mart usati |
 |---|---|---|
-| applicazione | `datasets/ccnl-applicazione` | `mart_ccnl_top` |
+| applicazione | `datasets/ccnl-applicazione` | `mart_ccnl_top`, `mart_ccnl_classifica` |
 | metadata | `datasets/ccnl-metadata` | `mart_ccnl_codici`, `mart_ccnl_ateco` |
 | confluenze | `datasets/ccnl-confluenze` | `mart_ccnl_vigenti_confluenze` |
 
@@ -14,7 +14,9 @@ Join analitico dei tre dataset sibling in due mart pronti all’uso.
 
 ### `mart_ccnl_intelligence`
 1 riga = 1 codice CCNL con:
-- peso Uniemens (ultimo anno, rank, quota, Δ)
+- peso Uniemens (ultimo dato disponibile, rank, quota, Δ)
+- classifica omogenea sull'ultimo anno con PA (`anno_riferimento`,
+  `rank_nazionale`, `quota_dipendenti`)
 - anagrafica depositi (stesure, vita)
 - ATECO aggregati
 - n. storie confluite
@@ -23,6 +25,10 @@ Join analitico dei tre dataset sibling in due mart pronti all’uso.
 ### `mart_ccnl_settori`
 1 riga = codice × sezione ATECO (per join settoriali).  
 Il `n_dipendenti` è del CCNL intero, non ripartito per divisione.
+
+### `mart_ccnl_geo`
+Top 5 province dei top 30 CCNL, sullo stesso `anno_riferimento` della
+classifica. La PA non ha dettaglio provinciale in questa fonte.
 
 ## Run
 

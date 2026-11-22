@@ -6,10 +6,10 @@ dataset:
   source_id: "cnel_archivio"
   tags: [welfare-lavoro, ccnl, cnel, contrattazione-collettiva, anagrafica]
   category: welfare-lavoro
-  description: "Anagrafica CCNL CNEL: archivio corrente e storico (codici, tipologie, date, firmatari, ATECO)."
+  description: "Anagrafica CCNL CNEL: archivio corrente e storico (codici, tipologie, date, firmatari, ATECO). 2 tipi di archivio su 10."
   years: [2026]
   time_coverage:
-    start_year: 1990
+    start_year: 1946
     end_year: 2026
 
 raw:
@@ -52,9 +52,12 @@ mart:
       sql: "sql/mart_ccnl_codici.sql"
     - name: "mart_ccnl_ateco"
       sql: "sql/mart_ccnl_ateco.sql"
+    - name: "mart_ccnl_rinnovi"
+      sql: "sql/mart_ccnl_rinnovi.sql"
   required_tables:
     - "mart_ccnl_codici"
     - "mart_ccnl_ateco"
+    - "mart_ccnl_rinnovi"
   validate:
     table_rules:
       mart_ccnl_codici:
@@ -76,6 +79,16 @@ mart:
           - codice_ccnl
           - settore_ateco
         min_rows: 100
+      mart_ccnl_rinnovi:
+        required_columns:
+          - codice_ccnl
+          - tipologia_ultimo_accordo
+          - ultima_stipula
+          - data_scadenza
+          - scaduto
+        primary_key:
+          - codice_ccnl
+        min_rows: 1000
 
 validation:
   fail_on_error: true
