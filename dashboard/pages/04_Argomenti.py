@@ -11,7 +11,8 @@ pivot = codici_pivot()
 
 st.caption(
     "Classificazione ufficiale CNEL su 4.812 accordi (tutte le stesure). "
-    "Presenza dell'argomento, non testo della clausola."
+    "Presenza dell'argomento, non testo della clausola. "
+    "La classificazione si ferma al 2023-06: i rinnovi 2024–2026 non sono coperti."
 )
 
 k1, k2, k3 = st.columns(3)

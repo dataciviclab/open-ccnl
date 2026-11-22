@@ -25,6 +25,12 @@ Le note operative più lunghe restano in `_local/decisions.md` (non versionato).
   l'ultimo anno completo è il 2024.
 - **Confluenze**: il file `principali-ccnl-storici.xlsx` ha cambiato header
   (`cod` → `id`) il 2026-11; l'extract riconosce entrambe le varianti.
+- **Analisi Avanzata = mappa storica.** La classificazione CNEL si ferma al
+  2023-06: 1.039 accordi successivi (630 codici, 14,8M dipendenti) non sono
+  classificati. Non usare `ccnl_argomenti` per descrivere i rinnovi 2024–2026.
+- **Nuovi codici 2025–2026.** 11 nuovi `id_ccnl` (catch-all, associazioni
+  datoriali minori) non hanno metriche né confluenze. Monitorare l'ingresso
+  nell'Excel applicazione prima di mapparli.
 
 ## 2026-10-10 — Corpus documentale fuori da main
 
