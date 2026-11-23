@@ -3,6 +3,27 @@
 Registro pubblico e sintetico delle scelte che cambiano il contratto dei dati.
 Le note operative più lunghe restano in `_local/decisions.md` (non versionato).
 
+## 2026-11-23 — Registro CNEL (foglio “1 - tutti i codici”)
+
+- **Decisione**: usare il foglio 1 di `documento-riepilogativo-testi-depositati.xlsx`
+  come dataset `ccnl_registro`: 1.659 codici con status reale, tipo
+  (dipendenti/AEC/parasubordinati), sottosezione, dirigenti e firmatari
+  normalizzati.
+- **Motivo**: l’API open data ha `stato = "acquisito"` su tutto e firmatari in
+  testo libero; il foglio 1 dà status e flag per confederazione
+  (Confindustria, Confapi, Confcommercio, Confesercenti, Confartigianato/CNA/Casa,
+  Legacoop/Confcooperative/AGCI, CGIL/CISL/UIL, Confsal, Cisal, UGL).
+- **Semantica dei flag**: “almeno una stesura firmata” (storico), non il testo
+  corrente. La stringa `firmatari_*` è l’ultimo deposito; i due possono non
+  coincidere (es. H011/C011/H05Y hanno UGL flag Sì ma il testo 2026 non elenca UGL).
+- **AEC/parasubordinati**: 42 AEC + 19 parasubordinati nel registro; 58 codici
+  hanno 0 dipendenti in Uniemens (agenti/collaboratori non sono dipendenti).
+  Restano nel registro ma fuori dalle metriche teste.
+- **Join**: `codice_ccnl` con metadata/applicazione; compose
+  `mart_ccnl_intelligence` e `mart_ccnl_firmatari` aggiungono “chi firma” al
+  peso 2024. Le quote per confederazione non sono una partizione (più firme
+  sullo stesso codice).
+
 ## 2026-11-22 — Allineamento dati e universo
 
 - **Anno di riferimento = ultimo anno con PA.** Il 2025 è pubblicato ma senza

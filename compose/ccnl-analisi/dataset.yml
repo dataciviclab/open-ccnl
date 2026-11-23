@@ -8,7 +8,7 @@ dataset:
   source_id: "cnel_archivio"
   tags: [welfare-lavoro, ccnl, cnel, compose, intelligence]
   category: welfare-lavoro
-  description: "Intelligence CCNL: join peso Uniemens × anagrafica depositi × ATECO × storia confluenze."
+  description: "Intelligence CCNL: join peso Uniemens × anagrafica depositi × ATECO × storia confluenze × registro firmatari."
   years: [2026]
 
 support:
@@ -32,6 +32,10 @@ support:
     type: dataset
     config: "../../datasets/ccnl-argomenti/dataset.yml"
     years: [2026]
+  - name: registro
+    type: dataset
+    config: "../../datasets/ccnl-registro/dataset.yml"
+    years: [2026]
 
 mart:
   tables:
@@ -41,10 +45,13 @@ mart:
       sql: "sql/mart_ccnl_settori.sql"
     - name: "mart_ccnl_geo"
       sql: "sql/mart_ccnl_geo.sql"
+    - name: "mart_ccnl_firmatari"
+      sql: "sql/mart_ccnl_firmatari.sql"
   required_tables:
     - "mart_ccnl_intelligence"
     - "mart_ccnl_settori"
     - "mart_ccnl_geo"
+    - "mart_ccnl_firmatari"
   validate:
     table_rules:
       mart_ccnl_intelligence:
@@ -58,6 +65,9 @@ mart:
           - n_stesure
           - n_codici_confluiti
           - n_argomenti_aa
+          - status_registro
+          - n_flag_maggiori
+          - fascia_firmatari
         primary_key:
           - codice_ccnl
         min_rows: 100
@@ -81,6 +91,17 @@ mart:
           - codice_ccnl
           - sigla_provincia
         min_rows: 50
+      mart_ccnl_firmatari:
+        required_columns:
+          - confederazione
+          - tipo
+          - n_codici
+          - n_codici_con_peso
+          - n_dipendenti_riferimento
+        primary_key:
+          - confederazione
+          - tipo
+        min_rows: 8
 
 validation:
   fail_on_error: true

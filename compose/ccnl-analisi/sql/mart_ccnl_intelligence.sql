@@ -1,6 +1,6 @@
 -- Compose intelligence — 1 riga per CCNL: peso + anagrafica + storia + copertura AA.
 -- Support: applicazione (mart_ccnl_top, mart_ccnl_classifica), metadata,
--- confluenze, argomenti.
+-- confluenze, argomenti, registro.
 --
 -- Anno di riferimento: l'ultimo anno in cui la PA ha dati (mart_ccnl_classifica).
 -- rank_nazionale/quota_dipendenti sono calcolati su quell'anno, in modo
@@ -18,6 +18,9 @@ codici AS (
 ),
 storie AS (
     SELECT * FROM read_parquet('{support.confluenze.mart.mart_ccnl_vigenti_confluenze}')
+),
+registro AS (
+    SELECT * FROM read_parquet('{support.registro.mart.mart_ccnl_registro}')
 ),
 ateco_agg AS (
     SELECT
@@ -47,6 +50,15 @@ SELECT
     t.titolo,
     t.status,
     t.sottosezione,
+    r.status AS status_registro,
+    r.tipo_ccnl AS tipo_ccnl_registro,
+    r.sottosezione AS sottosezione_registro,
+    r.is_dirigenti,
+    r.n_flag_maggiori,
+    r.ha_firmatari_maggiori,
+    r.fascia_firmatari,
+    r.firmatari_datoriali,
+    r.firmatari_sindacali,
     t.is_conto_annuale_ppaa,
     t.n_dipendenti,
     t.n_datori,
@@ -97,3 +109,4 @@ LEFT JOIN codici c ON t.codice_ccnl = c.codice_ccnl
 LEFT JOIN ateco_agg a ON t.codice_ccnl = a.codice_ccnl
 LEFT JOIN storie s ON t.codice_ccnl = s.codice_vigente
 LEFT JOIN argomenti aa ON t.codice_ccnl = aa.codice_ccnl
+LEFT JOIN registro r ON t.codice_ccnl = r.codice_ccnl
