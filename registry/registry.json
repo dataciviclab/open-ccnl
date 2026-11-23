@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "open-ccnl",
   "source_repo": "dataciviclab/open-ccnl",
-  "updated_at": "2026-11-22",
+  "updated_at": "2026-11-23",
   "datasets": [
     {
       "slug": "ccnl_analisi",
@@ -26,7 +26,8 @@
       "mart_refs": [
         "ccnl_analisi__mart_ccnl_intelligence",
         "ccnl_analisi__mart_ccnl_settori",
-        "ccnl_analisi__mart_ccnl_geo"
+        "ccnl_analisi__mart_ccnl_geo",
+        "ccnl_analisi__mart_ccnl_firmatari"
       ]
     },
     {
@@ -546,6 +547,157 @@
       ]
     },
     {
+      "slug": "ccnl_registro",
+      "name": "Ccnl Registro",
+      "description": "Registro CNEL: status, tipo, sottosezione e firmatari normalizzati per 1.659 CCNL/AEC.",
+      "source": "",
+      "source_id": "cnel_archivio",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "tags": [
+        "welfare-lavoro",
+        "ccnl",
+        "cnel",
+        "registro",
+        "firmatari"
+      ],
+      "category": "welfare-lavoro",
+      "columns": [
+        {
+          "name": "codice_ccnl",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sottosezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "status",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_ccnl",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "firmatari_datoriali",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "firmatari_sindacali",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "firmatari_sindacali_tavolo_separato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "firmatari_sindacali_adesione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "is_dirigenti",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "confindustria",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "confapi",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "confcommercio",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "confesercenti",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "confartigianato_cna_casa",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "legacoop_confcooperative_agci",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cgil_cisl_uil",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "confsal",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cisal",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "ugl",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/open-ccnl/ccnl_registro/2026/ccnl_registro_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "ccnl_registro__mart_ccnl_registro",
+        "ccnl_registro__mart_firmatari_stats"
+      ]
+    },
+    {
       "slug": "ccnl_territorio",
       "name": "Ccnl Territorio",
       "description": "Applicazione CCNL per provincia e genere (INPS Uniemens) — fogli provinciali 2023-2025.",
@@ -626,6 +778,16 @@
     }
   ],
   "marts": [
+    {
+      "slug": "ccnl_analisi__mart_ccnl_firmatari",
+      "dataset": "ccnl_analisi",
+      "table": "mart_ccnl_firmatari",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_analisi/2026/mart_ccnl_firmatari.parquet",
+        "multi_file": false
+      }
+    },
     {
       "slug": "ccnl_analisi__mart_ccnl_geo",
       "dataset": "ccnl_analisi",
@@ -787,6 +949,26 @@
       }
     },
     {
+      "slug": "ccnl_registro__mart_ccnl_registro",
+      "dataset": "ccnl_registro",
+      "table": "mart_ccnl_registro",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_registro/2026/mart_ccnl_registro.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "ccnl_registro__mart_firmatari_stats",
+      "dataset": "ccnl_registro",
+      "table": "mart_firmatari_stats",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_registro/2026/mart_firmatari_stats.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "ccnl_territorio__mart_ccnl_provincia",
       "dataset": "ccnl_territorio",
       "table": "mart_ccnl_provincia",
@@ -826,21 +1008,21 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261122T225810Z_8a372aea",
+        "run_id": "20261123T125701Z_ef9a594f",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
           "mart": 100
         },
         "output_rows": {
-          "mart": 6096
+          "mart": 6106
         },
         "output_bytes": {
-          "mart": 197037
+          "mart": 220842
         },
-        "started_at": "2026-11-22T22:58:10.223688+00:00",
-        "finished_at": "2026-11-22T22:58:10.331749+00:00",
-        "duration_seconds": 0.108
+        "started_at": "2026-11-23T12:57:01.508552+00:00",
+        "finished_at": "2026-11-23T12:57:01.609634+00:00",
+        "duration_seconds": 0.101
       }
     },
     {
@@ -851,7 +1033,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261122T224651Z_3a0a8c51",
+        "run_id": "20261123T124507Z_ba0f49f1",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -867,11 +1049,11 @@
         "output_bytes": {
           "raw": 2880663,
           "clean": 136571,
-          "mart": 355024
+          "mart": 353363
         },
-        "started_at": "2026-11-22T22:46:51.890076+00:00",
-        "finished_at": "2026-11-22T22:46:54.747592+00:00",
-        "duration_seconds": 2.858
+        "started_at": "2026-11-23T12:45:07.427335+00:00",
+        "finished_at": "2026-11-23T12:45:08.990990+00:00",
+        "duration_seconds": 1.564
       }
     },
     {
@@ -882,7 +1064,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261122T224655Z_22ea84f6",
+        "run_id": "20261123T124509Z_da8fdbf2",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -897,12 +1079,12 @@
         },
         "output_bytes": {
           "raw": 22263055,
-          "clean": 602950,
-          "mart": 128298
+          "clean": 602991,
+          "mart": 128316
         },
-        "started_at": "2026-11-22T22:46:55.171156+00:00",
-        "finished_at": "2026-11-22T22:57:46.496404+00:00",
-        "duration_seconds": 651.325
+        "started_at": "2026-11-23T12:45:09.443368+00:00",
+        "finished_at": "2026-11-23T12:56:38.369228+00:00",
+        "duration_seconds": 688.926
       }
     },
     {
@@ -913,7 +1095,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261122T225746Z_7dc79889",
+        "run_id": "20261123T125638Z_00b6fcec",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -929,11 +1111,11 @@
         "output_bytes": {
           "raw": 78167,
           "clean": 12456,
-          "mart": 5749
+          "mart": 5752
         },
-        "started_at": "2026-11-22T22:57:46.894552+00:00",
-        "finished_at": "2026-11-22T22:57:48.846512+00:00",
-        "duration_seconds": 1.952
+        "started_at": "2026-11-23T12:56:38.814721+00:00",
+        "finished_at": "2026-11-23T12:56:39.938829+00:00",
+        "duration_seconds": 1.124
       }
     },
     {
@@ -944,7 +1126,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261122T225749Z_5bd26b06",
+        "run_id": "20261123T125640Z_12e54394",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -953,18 +1135,49 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 7794,
-          "clean": 7794,
+          "raw": 7797,
+          "clean": 7797,
           "mart": 8376
         },
         "output_bytes": {
-          "raw": 4164859,
-          "clean": 440247,
-          "mart": 198674
+          "raw": 4167545,
+          "clean": 440307,
+          "mart": 198707
         },
-        "started_at": "2026-11-22T22:57:49.240156+00:00",
-        "finished_at": "2026-11-22T22:58:03.685004+00:00",
-        "duration_seconds": 14.445
+        "started_at": "2026-11-23T12:56:40.373999+00:00",
+        "finished_at": "2026-11-23T12:56:55.039143+00:00",
+        "duration_seconds": 14.665
+      }
+    },
+    {
+      "id": "ccnl_registro",
+      "source_id": "cnel_archivio",
+      "status": "ok",
+      "label": "ccnl_registro",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261123T125655Z_65f0c9e9",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 1659,
+          "clean": 1659,
+          "mart": 1669
+        },
+        "output_bytes": {
+          "raw": 417428,
+          "clean": 73241,
+          "mart": 80928
+        },
+        "started_at": "2026-11-23T12:56:55.424022+00:00",
+        "finished_at": "2026-11-23T12:56:56.474433+00:00",
+        "duration_seconds": 1.05
       }
     },
     {
@@ -975,7 +1188,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261122T225804Z_e0fdc2aa",
+        "run_id": "20261123T125656Z_91ec0bbd",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -991,11 +1204,11 @@
         "output_bytes": {
           "raw": 6061663,
           "clean": 518479,
-          "mart": 984042
+          "mart": 981859
         },
-        "started_at": "2026-11-22T22:58:04.089802+00:00",
-        "finished_at": "2026-11-22T22:58:09.788238+00:00",
-        "duration_seconds": 5.698
+        "started_at": "2026-11-23T12:56:56.861150+00:00",
+        "finished_at": "2026-11-23T12:57:01.140375+00:00",
+        "duration_seconds": 4.279
       }
     }
   ],
