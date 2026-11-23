@@ -22,8 +22,11 @@ foglio 1 non era usato.
 
 - Il campo `status` qui è quello reale (`vigente`/`confluito`/`cessato`);
   nell’API open data `stato` è sempre `acquisito`.
-- I flag sono Sì/No della fonte, normalizzati a booleani. 22 codici hanno
-  flag nulli (in genere depositi nuovi/minori).
+- I flag sono Sì/No della fonte. Cella vuota → **NULL** (non `false`):
+  22 codici hanno almeno una cella vuota, **tutti** `CCNL di nuovo deposito`.
+  Di questi, 19 hanno tutte le celle vuote → `fascia_firmatari =
+  'C_non_dichiarato'`; gli altri 3 sono parziali. I 19 non hanno dipendenti
+  Uniemens in nessun anno.
 - **I flag sono storici**: indicano che la confederazione ha firmato **almeno
   una stesura** del codice, non necessariamente il testo/ultimo deposito.
   Esempio: H011/C011/H05Y hanno `UGL = Sì`, ma la stringa
@@ -35,7 +38,8 @@ foglio 1 non era usato.
   partizione e possono superare il totale.
 - **42 AEC + 19 parasubordinati** sono nel registro ma non hanno teste
   Uniemens (agenti/collaboratori non sono dipendenti): 58 codici a 0
-  dipendenti, 3 ACN con ~83k.
+  dipendenti; i 3 con teste sono **AEC** (S241/S251/S261) con **84.943**
+  dipendenti nel 2024 (83.217 nel 2025).
 - Gli 11 codici “catch-all” 2025–2026 sono tutti `CCNL di nuovo deposito`,
   con i grandi firmatari a `No` (solo H566/H185 hanno UGL).
 - `n_firmatari_*` conta le voci separate da `;` nella stringa fonte: è un

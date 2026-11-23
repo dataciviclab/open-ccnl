@@ -64,7 +64,9 @@ mart:
           - sottosezione
           - n_firmatari_datoriali
           - n_firmatari_sindacali
+          - n_flag_dichiarati
           - n_flag_maggiori
+          - tutti_flag_non_dichiarati
           - fascia_firmatari
           - is_aec
           - is_parasubordinato
@@ -78,6 +80,7 @@ mart:
           - tipo
           - n_codici_con_flag
           - pct_codici_con_flag
+          - n_non_dichiarati
         primary_key:
           - confederazione
           - tipo

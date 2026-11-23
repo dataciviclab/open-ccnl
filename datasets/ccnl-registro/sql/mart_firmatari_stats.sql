@@ -1,6 +1,7 @@
 -- CNEL registro — MART: copertura per confederazione firmataria.
 -- flag = almeno una stesura del codice firmata dalla confederazione (storico),
 -- NON necessariamente il testo/ultimo deposito corrente.
+-- flag NULL = cella vuota in fonte (non dichiarato), distinto da false.
 -- Un codice può avere più firmatari: le somme per confederazione non sono una
 -- partizione e possono superare il totale dei codici.
 -- Legge solo da clean_input.
@@ -57,6 +58,11 @@ SELECT
         100.0 * count(*) FILTER (WHERE flag) / max(tot.totale),
         1
     ) AS pct_codici_con_flag,
+    count(*) FILTER (WHERE flag IS NULL) AS n_non_dichiarati,
+    round(
+        100.0 * count(*) FILTER (WHERE flag IS NULL) / max(tot.totale),
+        1
+    ) AS pct_non_dichiarati,
     count(*) FILTER (WHERE flag AND status = 'vigente') AS n_vigenti,
     count(*) FILTER (WHERE flag AND tipo_ccnl = 'dipendenti') AS n_dipendenti,
     count(*) FILTER (WHERE flag AND tipo_ccnl = 'accordo economico collettivo') AS n_aec,

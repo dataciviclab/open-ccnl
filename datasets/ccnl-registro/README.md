@@ -38,3 +38,6 @@ Join consigliato: `codice_ccnl` con `ccnl-metadata`, `ccnl-applicazione` e
 - Le quote per confederazione non sono una partizione: un codice può avere più
   firmatari e la somma può superare il 100%.
 - 42 AEC + 19 parasubordinati sono nel registro ma non hanno teste Uniemens.
+  I 3 AEC con teste (S241/S251/S261) valgono 84.943 dipendenti nel 2024.
+- Cella vuota → `NULL`, non `false`: 19 codici `CCNL di nuovo deposito`
+  finiscono in `C_non_dichiarato` (firmatari non dichiarati), non in “solo minori”.

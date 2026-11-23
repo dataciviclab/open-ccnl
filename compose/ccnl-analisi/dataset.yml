@@ -66,6 +66,7 @@ mart:
           - n_codici_confluiti
           - n_argomenti_aa
           - status_registro
+          - n_flag_dichiarati
           - n_flag_maggiori
           - fascia_firmatari
         primary_key:

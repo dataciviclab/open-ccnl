@@ -18,7 +18,10 @@ Le note operative più lunghe restano in `_local/decisions.md` (non versionato).
   coincidere (es. H011/C011/H05Y hanno UGL flag Sì ma il testo 2026 non elenca UGL).
 - **AEC/parasubordinati**: 42 AEC + 19 parasubordinati nel registro; 58 codici
   hanno 0 dipendenti in Uniemens (agenti/collaboratori non sono dipendenti).
-  Restano nel registro ma fuori dalle metriche teste.
+  I 3 AEC con teste (S241/S251/S261) valgono 84.943 dipendenti nel 2024.
+- **Cella vuota → NULL**: 22 codici (tutti `CCNL di nuovo deposito`) hanno
+  almeno un flag non dichiarato; 19 tutti vuoti → `C_non_dichiarato`, non
+  “solo minori”.
 - **Join**: `codice_ccnl` con metadata/applicazione; compose
   `mart_ccnl_intelligence` e `mart_ccnl_firmatari` aggiungono “chi firma” al
   peso 2024. Le quote per confederazione non sono una partizione (più firme

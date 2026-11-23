@@ -76,8 +76,12 @@ Lo stesso Excel delle confluenze ha un foglio piatto con **1.659 codici**
   30, CGIL/CISL/UIL 458, Confsal 187, Cisal 59, UGL 178.
 - **flag storici**: “almeno una stesura firmata”, non il testo corrente. H011,
   C011 e H05Y hanno UGL = Sì, ma la stringa dell’ultimo deposito non elenca UGL.
+- **cella vuota → NULL**: 22 codici hanno almeno un flag non dichiarato, tutti
+  `CCNL di nuovo deposito`; 19 hanno tutte le celle vuote e finiscono in
+  `C_non_dichiarato` (non in “solo minori”).
 - **AEC/parasubordinati**: 61 codici, 58 con 0 dipendenti in Uniemens (agenti e
-  collaboratori non sono dipendenti); 3 ACN con ~83k.
+  collaboratori non sono dipendenti); i 3 con teste sono AEC (S241/S251/S261)
+  con 84.943 dipendenti nel 2024 (83.217 nel 2025).
 
 Dataset: `ccnl_registro`; compose: `mart_ccnl_firmatari` (peso 2024 per
 confederazione, quote non partizionate).

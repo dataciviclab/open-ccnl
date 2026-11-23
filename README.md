@@ -52,7 +52,9 @@ totali per anno, radar rinnovi, firmatari e intelligence contrattuale composta).
 - **Registro firmatari**: i flag di `ccnl_registro` sono **storici** (almeno
   una stesura firmata), non i firmatari del testo corrente; la stringa
   `firmatari_*` è l'ultimo deposito. 42 AEC + 19 parasubordinati sono nel
-  registro ma non hanno teste Uniemens (agenti/collaboratori).
+  registro ma non hanno teste Uniemens; i 3 AEC con teste valgono 84.943
+  dipendenti nel 2024. Cella vuota → `NULL`: 19 `CCNL di nuovo deposito`
+  finiscono in `C_non_dichiarato`, non in “solo minori”.
 - **Province**: la fonte usa la geografia pre-2016 (CI, OG, OT, VS) e include
   ESTERO.
 
