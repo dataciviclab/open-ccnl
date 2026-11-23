@@ -1,0 +1,90 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ccnl_registro"
+  source_id: "cnel_archivio"
+  tags: [welfare-lavoro, ccnl, cnel, registro, firmatari]
+  category: welfare-lavoro
+  description: "Registro CNEL: status, tipo, sottosezione e firmatari normalizzati per 1.659 CCNL/AEC."
+  years: [2026]
+  time_coverage:
+    start_year: 2026
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "cnel_documento_riepilogativo"
+      type: "script"
+      args:
+        command: "python3 extract.py raw.csv"
+        output: "raw.csv"
+      client:
+        timeout: 180
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+  required_columns:
+    - codice_ccnl
+    - status
+    - tipo_ccnl
+    - sottosezione
+  validate:
+    min_rows: 1500
+    not_null:
+      - codice_ccnl
+      - status
+      - tipo_ccnl
+    primary_key:
+      - codice_ccnl
+
+mart:
+  tables:
+    - name: "mart_ccnl_registro"
+      sql: "sql/mart_ccnl_registro.sql"
+    - name: "mart_firmatari_stats"
+      sql: "sql/mart_firmatari_stats.sql"
+  required_tables:
+    - "mart_ccnl_registro"
+    - "mart_firmatari_stats"
+  validate:
+    table_rules:
+      mart_ccnl_registro:
+        required_columns:
+          - codice_ccnl
+          - status
+          - tipo_ccnl
+          - sottosezione
+          - n_firmatari_datoriali
+          - n_firmatari_sindacali
+          - n_flag_dichiarati
+          - n_flag_maggiori
+          - tutti_flag_non_dichiarati
+          - fascia_firmatari
+          - is_aec
+          - is_parasubordinato
+          - is_nuovo_deposito
+        primary_key:
+          - codice_ccnl
+        min_rows: 1500
+      mart_firmatari_stats:
+        required_columns:
+          - confederazione
+          - tipo
+          - n_codici_con_flag
+          - pct_codici_con_flag
+          - n_non_dichiarati
+        primary_key:
+          - confederazione
+          - tipo
+        min_rows: 8
+
+validation:
+  fail_on_error: true

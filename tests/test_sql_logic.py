@@ -224,3 +224,119 @@ def test_rinnovi_tiebreaker_is_deterministic() -> None:
     got = {r["codice_ccnl"]: r for r in _run("datasets/ccnl-metadata/sql/mart_ccnl_rinnovi.sql", METADATA_COLS, rows)}
 
     assert got["TIE"]["data_scadenza"] == dt.date(2028, 1, 1)
+
+
+REGISTRO_COLS = """
+    codice_ccnl VARCHAR, status VARCHAR, tipo_ccnl VARCHAR, sottosezione VARCHAR,
+    titolo VARCHAR, firmatari_datoriali VARCHAR, firmatari_sindacali VARCHAR,
+    firmatari_sindacali_tavolo_separato VARCHAR, firmatari_sindacali_adesione VARCHAR,
+    is_dirigenti BOOLEAN, confindustria BOOLEAN, confapi BOOLEAN, confcommercio BOOLEAN,
+    confesercenti BOOLEAN, confartigianato_cna_casa BOOLEAN,
+    legacoop_confcooperative_agci BOOLEAN, cgil_cisl_uil BOOLEAN, confsal BOOLEAN,
+    cisal BOOLEAN, ugl BOOLEAN
+"""
+
+
+FLAG_KEYS = (
+    "confindustria",
+    "confapi",
+    "confcommercio",
+    "confesercenti",
+    "confartigianato_cna_casa",
+    "legacoop_confcooperative_agci",
+    "cgil_cisl_uil",
+    "confsal",
+    "cisal",
+    "ugl",
+)
+ALL_NONE = {k: None for k in FLAG_KEYS}
+
+
+def _registro_row(
+    code: str,
+    *,
+    status: str = "vigente",
+    tipo: str = "dipendenti",
+    sottosezione: str = "CCNL settore vigenti o ultrattivi",
+    datoriali: str = "",
+    sindacali: str = "",
+    flags: dict[str, bool] | None = None,
+) -> tuple:
+    flags = flags or {}
+    return (
+        code,
+        status,
+        tipo,
+        sottosezione,
+        code,
+        datoriali,
+        sindacali,
+        "",
+        "",
+        False,
+        flags.get("confindustria", False),
+        flags.get("confapi", False),
+        flags.get("confcommercio", False),
+        flags.get("confesercenti", False),
+        flags.get("confartigianato_cna_casa", False),
+        flags.get("legacoop_confcooperative_agci", False),
+        flags.get("cgil_cisl_uil", False),
+        flags.get("confsal", False),
+        flags.get("cisal", False),
+        flags.get("ugl", False),
+    )
+
+
+@pytest.mark.pure_unit
+def test_registro_flags_and_classifications() -> None:
+    rows = [
+        _registro_row(
+            "AAA",
+            datoriali="CONFINDUSTRIA;FEDERMECCANICA",
+            sindacali="FILCAMS CGIL;FISASCAT CISL;UILTUCS",
+            flags={"confindustria": True, "cgil_cisl_uil": True, "ugl": True},
+        ),
+        _registro_row(
+            "BBB",
+            tipo="accordo economico collettivo",
+            sottosezione="CCNL di nuovo deposito",
+        ),
+        _registro_row("CCC", tipo="parasubordinati", sottosezione="parasubordinati"),
+        _registro_row("DDD", flags=ALL_NONE),
+    ]
+    got = {r["codice_ccnl"]: r for r in _run("datasets/ccnl-registro/sql/mart_ccnl_registro.sql", REGISTRO_COLS, rows)}
+
+    assert got["AAA"]["n_flag_dichiarati"] == 10
+    assert got["AAA"]["n_flag_maggiori"] == 3
+    assert got["AAA"]["fascia_firmatari"] == "A_almeno_una_maggiore"
+    assert got["AAA"]["n_firmatari_datoriali"] == 2
+    assert got["AAA"]["n_firmatari_sindacali"] == 3
+    assert got["BBB"]["n_flag_dichiarati"] == 10
+    assert got["BBB"]["n_flag_maggiori"] == 0
+    assert got["BBB"]["fascia_firmatari"] == "B_solo_minori"
+    assert got["BBB"]["is_aec"] is True
+    assert got["BBB"]["is_nuovo_deposito"] is True
+    assert got["CCC"]["is_parasubordinato"] is True
+    assert got["DDD"]["n_flag_dichiarati"] == 0
+    assert got["DDD"]["n_flag_maggiori"] == 0
+    assert got["DDD"]["tutti_flag_non_dichiarati"] is True
+    assert got["DDD"]["fascia_firmatari"] == "C_non_dichiarato"
+
+
+@pytest.mark.pure_unit
+def test_firmatari_stats_counts_flags() -> None:
+    rows = [
+        _registro_row("AAA", flags={"confindustria": True, "cgil_cisl_uil": True}),
+        _registro_row("BBB", flags={"ugl": True}),
+        _registro_row("CCC"),
+        _registro_row("DDD", flags=ALL_NONE),
+    ]
+    got = {(r["confederazione"], r["tipo"]): r for r in _run("datasets/ccnl-registro/sql/mart_firmatari_stats.sql", REGISTRO_COLS, rows)}
+
+    assert got[("confindustria", "datoriale")]["n_codici_con_flag"] == 1
+    assert got[("confindustria", "datoriale")]["pct_codici_con_flag"] == pytest.approx(25.0)
+    assert got[("confindustria", "datoriale")]["n_non_dichiarati"] == 1
+    assert got[("cgil_cisl_uil", "sindacale")]["n_codici_con_flag"] == 1
+    assert got[("ugl", "sindacale")]["n_codici_con_flag"] == 1
+    assert got[("confapi", "datoriale")]["n_codici_con_flag"] == 0
+    assert got[("confapi", "datoriale")]["n_non_dichiarati"] == 1

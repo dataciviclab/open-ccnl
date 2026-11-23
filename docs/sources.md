@@ -60,6 +60,32 @@ Pagina: https://www.cnel.it/archivio-contratti/contratti-open-data
 - Confluenze: header di `principali-ccnl-storici.xlsx` cambiato
   (`CCNL confluito - cod` → `CCNL id confluito`); l’extract gestisce entrambi.
 
+### Foglio “1 - tutti i codici” → `ccnl_registro`
+
+Lo stesso Excel delle confluenze ha un foglio piatto con **1.659 codici**
+(aggiornamento 2026-10-31), prima non usato:
+
+- **status reale**: 1.177 vigente, 296 confluito, 186 cessato. L’API open data
+  ha `stato = "acquisito"` su tutto.
+- **tipo**: 1.598 dipendenti, 42 accordi economici collettivi, 19 parasubordinati.
+- **sottosezione**: 1.040 altri CCNL, 375 vigenti/ultrattivi, 74 pubblico,
+  63 nuovo deposito, 40 aziendali nazionali, 38 AEC, 19 parasubordinati,
+  10 dirigenti privato.
+- **firmatari normalizzati**: Confindustria 141, Confapi 23, Confcommercio 57,
+  Confesercenti 8, Confartigianato/CNA/Casa 38, Legacoop/Confcooperative/AGCI
+  30, CGIL/CISL/UIL 458, Confsal 187, Cisal 59, UGL 178.
+- **flag storici**: “almeno una stesura firmata”, non il testo corrente. H011,
+  C011 e H05Y hanno UGL = Sì, ma la stringa dell’ultimo deposito non elenca UGL.
+- **cella vuota → NULL**: 22 codici hanno almeno un flag non dichiarato, tutti
+  `CCNL di nuovo deposito`; 19 hanno tutte le celle vuote e finiscono in
+  `C_non_dichiarato` (non in “solo minori”).
+- **AEC/parasubordinati**: 61 codici, 58 con 0 dipendenti in Uniemens (agenti e
+  collaboratori non sono dipendenti); i 3 con teste sono AEC (S241/S251/S261)
+  con 84.943 dipendenti nel 2024 (83.217 nel 2025).
+
+Dataset: `ccnl_registro`; compose: `mart_ccnl_firmatari` (peso 2024 per
+confederazione, quote non partizionate).
+
 ### 11 nuovi codici senza metriche né confluenze
 
 Sono nuovi `id_ccnl` (1779–1790), non alias di codici esistenti. Tutti

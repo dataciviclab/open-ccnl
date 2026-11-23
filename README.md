@@ -14,19 +14,22 @@ grafo delle confluenze tra contratti.
 | Dataset | Righe | Periodo | Contenuto |
 |---|---:|---|---|
 | `ccnl_metadata` | ~7.800 | storico + corrente | Accordi depositati: codici, date, firmatari, ATECO |
+| `ccnl_registro` | ~1.660 | 2026 | Registro CNEL: status, tipo, sottosezione, firmatari normalizzati |
 | `ccnl_applicazione` | ~13.200 | 2018–2025 | Datori e dipendenti per CCNL × anno (F/M dal 2023, solo privato) |
 | `ccnl_territorio` | ~166.000 | 2023–2025 | Dipendenti per provincia × genere × CCNL (solo Uniemens) |
 | `ccnl_confluenze` | ~610 | — | Mappa confluenze: quale codice storico è confluito dove |
 
-+ 19 mart analitici (ranking omogenei, serie storiche, quote di genere,
-totali per anno, radar rinnovi, intelligence contrattuale composta). Fonte:
++ 22 mart analitici (ranking omogenei, serie storiche, quote di genere,
+totali per anno, radar rinnovi, firmatari e intelligence contrattuale composta). Fonte:
 [CNEL Archivio Contratti](https://www.cnel.it/archivio-contratti/contratti-open-data)
 — Italian Open Data License v2.0.
 
 ## Esempi di domande
 
 - Quali sono i 20 CCNL che coprono più dipendenti, e come sono cambiate le quote?
+- Chi firma i CCNL che coprono più lavoratori, e quanta parte del privato è coperta dalle grandi confederazioni?
 - Quanti contratti collettivi vigono in quali comparti, e dove è più frammentato?
+- Quanti codici sono AEC o parasubordinati, e perché non hanno teste in Uniemens?
 - Quali CCNL hanno superato la scadenza contrattuale e quanti lavoratori restano sotto quelle regole?
 - Come si sono fusi i codici contrattuali storici nei vigenti (grafo confluenze)?
 - Quante donne e uomini copre ogni contratto, per provincia?
@@ -46,6 +49,12 @@ totali per anno, radar rinnovi, intelligence contrattuale composta). Fonte:
 - **Territorio vs nazionale**: il territorio include aggregati non-CCNL
   (`CPUB`, `CDIV`) e non ha il dettaglio PA né H501; il nazionale include la PA
   ma non quei aggregati. I due totali non sono sommabili.
+- **Registro firmatari**: i flag di `ccnl_registro` sono **storici** (almeno
+  una stesura firmata), non i firmatari del testo corrente; la stringa
+  `firmatari_*` è l'ultimo deposito. 42 AEC + 19 parasubordinati sono nel
+  registro ma non hanno teste Uniemens; i 3 AEC con teste valgono 84.943
+  dipendenti nel 2024. Cella vuota → `NULL`: 19 `CCNL di nuovo deposito`
+  finiscono in `C_non_dichiarato`, non in “solo minori”.
 - **Province**: la fonte usa la geografia pre-2016 (CI, OG, OT, VS) e include
   ESTERO.
 
