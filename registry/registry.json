@@ -1,19 +1,18 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "repo": "open-ccnl",
   "source_repo": "dataciviclab/open-ccnl",
-  "updated_at": "2026-11-23",
+  "updated_at": "2026-11-25",
+  "gcs": {
+    "clean": "year",
+    "prefix": "open-ccnl/"
+  },
   "datasets": [
     {
       "slug": "ccnl_analisi",
       "name": "Ccnl Analisi",
       "description": "Intelligence CCNL: join peso Uniemens × anagrafica depositi × ATECO × storia confluenze.",
-      "source": "",
       "source_id": "cnel_archivio",
-      "period": {
-        "start": 2026,
-        "end": 2026
-      },
       "tags": [
         "welfare-lavoro",
         "ccnl",
@@ -22,24 +21,27 @@
         "intelligence"
       ],
       "category": "welfare-lavoro",
-      "stage": "incubating",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
       "mart_refs": [
         "ccnl_analisi__mart_ccnl_intelligence",
         "ccnl_analisi__mart_ccnl_settori",
         "ccnl_analisi__mart_ccnl_geo",
         "ccnl_analisi__mart_ccnl_firmatari"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-25T12:02:33.072436+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "ccnl_applicazione",
       "name": "Ccnl Applicazione",
       "description": "Applicazione dei CCNL: datori di lavoro e dipendenti (Uniemens/INPS) 2018-2025, con F/M dal 2023.",
-      "source": "",
       "source_id": "cnel_archivio",
-      "period": {
-        "start": 2018,
-        "end": 2025
-      },
       "tags": [
         "welfare-lavoro",
         "ccnl",
@@ -48,123 +50,109 @@
         "headcount"
       ],
       "category": "welfare-lavoro",
+      "period": {
+        "start": 2018,
+        "end": 2025
+      },
+      "partitions": {
+        "2026": 13184
+      },
       "columns": [
         {
           "name": "codice_ccnl",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "sottosezione",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "status",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "tipo_ccnl",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "titolo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "firmatari_datoriali",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "firmatari_sindacali",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "",
           "semantic_type": "year"
         },
         {
           "name": "n_datori",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "n_dipendenti",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "n_dipendenti_f",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "n_dipendenti_m",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "filtri_conto_annuale_ppaa",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "is_conto_annuale_ppaa",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "fonte_note",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/open-ccnl/ccnl_applicazione/2026/ccnl_applicazione_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "ccnl_applicazione__mart_ccnl_serie",
         "ccnl_applicazione__mart_ccnl_top",
         "ccnl_applicazione__mart_ccnl_mercati",
         "ccnl_applicazione__mart_ccnl_totali_anno",
         "ccnl_applicazione__mart_ccnl_classifica"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-25T11:52:40.023473+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "ccnl_argomenti",
       "name": "Ccnl Argomenti",
       "description": "Analisi Avanzata CNEL: accordi classificati per sotto-argomento (88 voci ufficiali: minimi, TFR, scatti...).",
-      "source": "",
       "source_id": "cnel_archivio",
-      "period": {
-        "start": 1952,
-        "end": 2026
-      },
       "tags": [
         "welfare-lavoro",
         "ccnl",
@@ -173,114 +161,101 @@
         "argomenti"
       ],
       "category": "welfare-lavoro",
+      "period": {
+        "start": 1952,
+        "end": 2026
+      },
+      "partitions": {
+        "2026": 95899
+      },
       "columns": [
         {
           "name": "id_accordo",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "codice_ccnl",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "codice_argomento",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "nome_argomento",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "codice_macro",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "nome_macro",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "tipologia_accordo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_stipula",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_decorrenza",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_scadenza_contrattuale",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "titolo_ccnl",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "settori_ateco",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "stato_aa",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "ultimo_accordo_vigente",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/open-ccnl/ccnl_argomenti/2026/ccnl_argomenti_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "ccnl_argomenti__mart_argomenti_stats",
         "ccnl_argomenti__mart_codici_argomenti",
         "ccnl_argomenti__mart_codici_pivot"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-25T11:52:43.242143+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "ccnl_confluenze",
       "name": "Ccnl Confluenze",
       "description": "Mappa delle confluenze dei codici CCNL: codici storici confluiti in CCNL vigenti.",
-      "source": "",
       "source_id": "cnel_archivio",
-      "period": {
-        "start": 2026,
-        "end": 2026
-      },
       "tags": [
         "welfare-lavoro",
         "ccnl",
@@ -289,90 +264,81 @@
         "grafo-storico"
       ],
       "category": "welfare-lavoro",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "partitions": {
+        "2026": 611
+      },
       "columns": [
         {
           "name": "fonte",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "codice_confluito",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "confluenze_intermedie",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "codice_vigente",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "titolo_confluito",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "titolo_vigente",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "sezione_ateco",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "ateco_code"
         },
         {
           "name": "sezione_ateco_desc",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "inizio_storia",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "fine_storia",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/open-ccnl/ccnl_confluenze/2026/ccnl_confluenze_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "ccnl_confluenze__mart_ccnl_confluenze",
         "ccnl_confluenze__mart_ccnl_vigenti_confluenze"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-25T12:02:06.610766+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "ccnl_metadata",
       "name": "Ccnl Metadata",
       "description": "Anagrafica CCNL CNEL: archivio corrente e storico (codici, tipologie, date, firmatari, ATECO).",
-      "source": "",
       "source_id": "cnel_archivio",
-      "period": {
-        "start": 1946,
-        "end": 2026
-      },
       "tags": [
         "welfare-lavoro",
         "ccnl",
@@ -381,181 +347,157 @@
         "anagrafica"
       ],
       "category": "welfare-lavoro",
+      "period": {
+        "start": 1946,
+        "end": 2026
+      },
+      "partitions": {
+        "2026": 7798
+      },
       "columns": [
         {
           "name": "archivio",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "id_accordo",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "id_ccnl",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         },
         {
           "name": "codice_ccnl",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "identificativo_accordo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "ambito",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "tipologia_accordo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "titolo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "titolo_ccnl",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "stato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "country_code"
         },
         {
           "name": "stato_aa",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_stipula",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_decorrenza",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_scadenza_contrattuale",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_scadenza_economica",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "data_pubblicazione",
           "type": "DATE",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "ultimo_accordo_vigente",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "visibile_online",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "parti_datoriali",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "parti_sindacali",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "settori",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "settori_descrizione",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "settori_ateco",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "settori_ateco_descrizione",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "sottosettori_descrizione",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/open-ccnl/ccnl_metadata/2026/ccnl_metadata_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "ccnl_metadata__mart_ccnl_codici",
         "ccnl_metadata__mart_ccnl_ateco",
         "ccnl_metadata__mart_ccnl_rinnovi"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-25T12:02:09.196112+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "ccnl_registro",
       "name": "Ccnl Registro",
       "description": "Registro CNEL: status, tipo, sottosezione e firmatari normalizzati per 1.659 CCNL/AEC.",
-      "source": "",
       "source_id": "cnel_archivio",
-      "period": {
-        "start": 2026,
-        "end": 2026
-      },
       "tags": [
         "welfare-lavoro",
         "ccnl",
@@ -564,149 +506,130 @@
         "firmatari"
       ],
       "category": "welfare-lavoro",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "partitions": {
+        "2026": 1659
+      },
       "columns": [
         {
           "name": "codice_ccnl",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "sottosezione",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "status",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "tipo_ccnl",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "titolo",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "firmatari_datoriali",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "firmatari_sindacali",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "firmatari_sindacali_tavolo_separato",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "firmatari_sindacali_adesione",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "is_dirigenti",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "confindustria",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "confapi",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "confcommercio",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "confesercenti",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "confartigianato_cna_casa",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "legacoop_confcooperative_agci",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "cgil_cisl_uil",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "confsal",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "cisal",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "ugl",
           "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/open-ccnl/ccnl_registro/2026/ccnl_registro_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "ccnl_registro__mart_ccnl_registro",
         "ccnl_registro__mart_firmatari_stats"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-25T12:02:23.552222+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "ccnl_territorio",
       "name": "Ccnl Territorio",
       "description": "Applicazione CCNL per provincia e genere (INPS Uniemens) — fogli provinciali 2023-2025.",
-      "source": "",
       "source_id": "cnel_archivio",
-      "period": {
-        "start": 2023,
-        "end": 2025
-      },
       "tags": [
         "welfare-lavoro",
         "ccnl",
@@ -716,65 +639,64 @@
         "uniemens"
       ],
       "category": "welfare-lavoro",
+      "period": {
+        "start": 2023,
+        "end": 2025
+      },
+      "partitions": {
+        "2026": 166507
+      },
       "columns": [
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "",
           "semantic_type": "year"
         },
         {
           "name": "codice_ccnl",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "region_code"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "province_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
           "semantic_type": "province_code"
         },
         {
           "name": "sesso",
           "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
+          "role": "dimension"
         },
         {
           "name": "n_dipendenti",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "metric"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/open-ccnl/ccnl_territorio/2026/ccnl_territorio_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
       "mart_refs": [
         "ccnl_territorio__mart_ccnl_provincia",
         "ccnl_territorio__mart_ccnl_regione",
         "ccnl_territorio__mart_provincia_sintesi"
-      ]
+      ],
+      "last_run": {
+        "at": "2026-11-25T12:02:25.233917+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     }
   ],
   "marts": [
@@ -782,527 +704,236 @@
       "slug": "ccnl_analisi__mart_ccnl_firmatari",
       "dataset": "ccnl_analisi",
       "table": "mart_ccnl_firmatari",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_analisi/2026/mart_ccnl_firmatari.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "confederazione",
+        "tipo"
+      ]
     },
     {
       "slug": "ccnl_analisi__mart_ccnl_geo",
       "dataset": "ccnl_analisi",
       "table": "mart_ccnl_geo",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_analisi/2026/mart_ccnl_geo.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl",
+        "sigla_provincia"
+      ]
     },
     {
       "slug": "ccnl_analisi__mart_ccnl_intelligence",
       "dataset": "ccnl_analisi",
       "table": "mart_ccnl_intelligence",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_analisi/2026/mart_ccnl_intelligence.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl"
+      ]
     },
     {
       "slug": "ccnl_analisi__mart_ccnl_settori",
       "dataset": "ccnl_analisi",
       "table": "mart_ccnl_settori",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_analisi/2026/mart_ccnl_settori.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl",
+        "settore_ateco"
+      ]
     },
     {
       "slug": "ccnl_applicazione__mart_ccnl_classifica",
       "dataset": "ccnl_applicazione",
       "table": "mart_ccnl_classifica",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_applicazione/2026/mart_ccnl_classifica.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl"
+      ]
     },
     {
       "slug": "ccnl_applicazione__mart_ccnl_mercati",
       "dataset": "ccnl_applicazione",
       "table": "mart_ccnl_mercati",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_applicazione/2026/mart_ccnl_mercati.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "anno",
+        "sottosezione"
+      ]
     },
     {
       "slug": "ccnl_applicazione__mart_ccnl_serie",
       "dataset": "ccnl_applicazione",
       "table": "mart_ccnl_serie",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_applicazione/2026/mart_ccnl_serie.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl",
+        "anno"
+      ]
     },
     {
       "slug": "ccnl_applicazione__mart_ccnl_top",
       "dataset": "ccnl_applicazione",
       "table": "mart_ccnl_top",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_applicazione/2026/mart_ccnl_top.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl"
+      ]
     },
     {
       "slug": "ccnl_applicazione__mart_ccnl_totali_anno",
       "dataset": "ccnl_applicazione",
       "table": "mart_ccnl_totali_anno",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_applicazione/2026/mart_ccnl_totali_anno.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "anno"
+      ]
     },
     {
       "slug": "ccnl_argomenti__mart_argomenti_stats",
       "dataset": "ccnl_argomenti",
       "table": "mart_argomenti_stats",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_argomenti/2026/mart_argomenti_stats.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_argomento"
+      ]
     },
     {
       "slug": "ccnl_argomenti__mart_codici_argomenti",
       "dataset": "ccnl_argomenti",
       "table": "mart_codici_argomenti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_argomenti/2026/mart_codici_argomenti.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl",
+        "codice_argomento"
+      ]
     },
     {
       "slug": "ccnl_argomenti__mart_codici_pivot",
       "dataset": "ccnl_argomenti",
       "table": "mart_codici_pivot",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_argomenti/2026/mart_codici_pivot.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl"
+      ]
     },
     {
       "slug": "ccnl_confluenze__mart_ccnl_confluenze",
       "dataset": "ccnl_confluenze",
       "table": "mart_ccnl_confluenze",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_confluenze/2026/mart_ccnl_confluenze.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_confluito"
+      ]
     },
     {
       "slug": "ccnl_confluenze__mart_ccnl_vigenti_confluenze",
       "dataset": "ccnl_confluenze",
       "table": "mart_ccnl_vigenti_confluenze",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_confluenze/2026/mart_ccnl_vigenti_confluenze.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_vigente"
+      ]
     },
     {
       "slug": "ccnl_metadata__mart_ccnl_ateco",
       "dataset": "ccnl_metadata",
       "table": "mart_ccnl_ateco",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_metadata/2026/mart_ccnl_ateco.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl",
+        "settore_ateco"
+      ]
     },
     {
       "slug": "ccnl_metadata__mart_ccnl_codici",
       "dataset": "ccnl_metadata",
       "table": "mart_ccnl_codici",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_metadata/2026/mart_ccnl_codici.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl"
+      ]
     },
     {
       "slug": "ccnl_metadata__mart_ccnl_rinnovi",
       "dataset": "ccnl_metadata",
       "table": "mart_ccnl_rinnovi",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_metadata/2026/mart_ccnl_rinnovi.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl"
+      ]
     },
     {
       "slug": "ccnl_registro__mart_ccnl_registro",
       "dataset": "ccnl_registro",
       "table": "mart_ccnl_registro",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_registro/2026/mart_ccnl_registro.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl"
+      ]
     },
     {
       "slug": "ccnl_registro__mart_firmatari_stats",
       "dataset": "ccnl_registro",
       "table": "mart_firmatari_stats",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_registro/2026/mart_firmatari_stats.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "confederazione",
+        "tipo"
+      ]
     },
     {
       "slug": "ccnl_territorio__mart_ccnl_provincia",
       "dataset": "ccnl_territorio",
       "table": "mart_ccnl_provincia",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_territorio/2026/mart_ccnl_provincia.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl",
+        "anno",
+        "sigla_provincia"
+      ]
     },
     {
       "slug": "ccnl_territorio__mart_ccnl_regione",
       "dataset": "ccnl_territorio",
       "table": "mart_ccnl_regione",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_territorio/2026/mart_ccnl_regione.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "codice_ccnl",
+        "anno",
+        "regione"
+      ]
     },
     {
       "slug": "ccnl_territorio__mart_provincia_sintesi",
       "dataset": "ccnl_territorio",
       "table": "mart_provincia_sintesi",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/open-ccnl/ccnl_territorio/2026/mart_provincia_sintesi.parquet",
-        "multi_file": false
-      }
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "anno",
+        "sigla_provincia"
+      ]
     }
   ],
-  "signals": [
-    {
-      "id": "compose:ccnl_analisi",
-      "source_id": "cnel_archivio",
-      "status": "ok",
-      "label": "ccnl_analisi",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261123T125701Z_ef9a594f",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 100
-        },
-        "output_rows": {
-          "mart": 6106
-        },
-        "output_bytes": {
-          "mart": 220842
-        },
-        "started_at": "2026-11-23T12:57:01.508552+00:00",
-        "finished_at": "2026-11-23T12:57:01.609634+00:00",
-        "duration_seconds": 0.101
-      }
-    },
-    {
-      "id": "ccnl_applicazione",
-      "source_id": "cnel_archivio",
-      "status": "ok",
-      "label": "ccnl_applicazione",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261123T124507Z_ba0f49f1",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 13184,
-          "clean": 13184,
-          "mart": 15253
-        },
-        "output_bytes": {
-          "raw": 2880663,
-          "clean": 136571,
-          "mart": 353363
-        },
-        "started_at": "2026-11-23T12:45:07.427335+00:00",
-        "finished_at": "2026-11-23T12:45:08.990990+00:00",
-        "duration_seconds": 1.564
-      }
-    },
-    {
-      "id": "ccnl_argomenti",
-      "source_id": "cnel_archivio",
-      "status": "ok",
-      "label": "ccnl_argomenti",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261123T124509Z_da8fdbf2",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 95899,
-          "clean": 95899,
-          "mart": 41631
-        },
-        "output_bytes": {
-          "raw": 22263055,
-          "clean": 602991,
-          "mart": 128316
-        },
-        "started_at": "2026-11-23T12:45:09.443368+00:00",
-        "finished_at": "2026-11-23T12:56:38.369228+00:00",
-        "duration_seconds": 688.926
-      }
-    },
-    {
-      "id": "ccnl_confluenze",
-      "source_id": "cnel_archivio",
-      "status": "ok",
-      "label": "ccnl_confluenze",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261123T125638Z_00b6fcec",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 611,
-          "clean": 611,
-          "mart": 398
-        },
-        "output_bytes": {
-          "raw": 78167,
-          "clean": 12456,
-          "mart": 5752
-        },
-        "started_at": "2026-11-23T12:56:38.814721+00:00",
-        "finished_at": "2026-11-23T12:56:39.938829+00:00",
-        "duration_seconds": 1.124
-      }
-    },
-    {
-      "id": "ccnl_metadata",
-      "source_id": "cnel_archivio",
-      "status": "ok",
-      "label": "ccnl_metadata",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261123T125640Z_12e54394",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 7797,
-          "clean": 7797,
-          "mart": 8376
-        },
-        "output_bytes": {
-          "raw": 4167545,
-          "clean": 440307,
-          "mart": 198707
-        },
-        "started_at": "2026-11-23T12:56:40.373999+00:00",
-        "finished_at": "2026-11-23T12:56:55.039143+00:00",
-        "duration_seconds": 14.665
-      }
-    },
-    {
-      "id": "ccnl_registro",
-      "source_id": "cnel_archivio",
-      "status": "ok",
-      "label": "ccnl_registro",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261123T125655Z_65f0c9e9",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 1659,
-          "clean": 1659,
-          "mart": 1669
-        },
-        "output_bytes": {
-          "raw": 417428,
-          "clean": 73241,
-          "mart": 80928
-        },
-        "started_at": "2026-11-23T12:56:55.424022+00:00",
-        "finished_at": "2026-11-23T12:56:56.474433+00:00",
-        "duration_seconds": 1.05
-      }
-    },
-    {
-      "id": "ccnl_territorio",
-      "source_id": "cnel_archivio",
-      "status": "ok",
-      "label": "ccnl_territorio",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261123T125656Z_91ec0bbd",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 166507,
-          "clean": 166507,
-          "mart": 119472
-        },
-        "output_bytes": {
-          "raw": 6061663,
-          "clean": 518479,
-          "mart": 981859
-        },
-        "started_at": "2026-11-23T12:56:56.861150+00:00",
-        "finished_at": "2026-11-23T12:57:01.140375+00:00",
-        "duration_seconds": 4.279
-      }
-    }
-  ],
-  "codelists": [],
-  "entities": {
-    "entities": {
-      "Attività economica": {
-        "entity": "Attività economica",
-        "label": "Attività economica",
-        "datasets": [
-          {
-            "slug": "ccnl_confluenze",
-            "name": "Ccnl Confluenze",
-            "column": "sezione_ateco",
-            "semantic_type": "ateco_code"
-          }
-        ],
-        "types": {
-          "ateco_code": 1
-        }
-      },
-      "Nazione": {
-        "entity": "Nazione",
-        "label": "Nazione",
-        "datasets": [
-          {
-            "slug": "ccnl_metadata",
-            "name": "Ccnl Metadata",
-            "column": "stato",
-            "semantic_type": "country_code"
-          }
-        ],
-        "types": {
-          "country_code": 1
-        }
-      },
-      "Provincia": {
-        "entity": "Provincia",
-        "label": "Provincia",
-        "datasets": [
-          {
-            "slug": "ccnl_territorio",
-            "name": "Ccnl Territorio",
-            "column": "sigla_provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "ccnl_territorio",
-            "name": "Ccnl Territorio",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          }
-        ],
-        "types": {
-          "province_code": 2
-        }
-      },
-      "Regione": {
-        "entity": "Regione",
-        "label": "Regione",
-        "datasets": [
-          {
-            "slug": "ccnl_territorio",
-            "name": "Ccnl Territorio",
-            "column": "regione",
-            "semantic_type": "region_code"
-          }
-        ],
-        "types": {
-          "region_code": 1
-        }
-      },
-      "Tempo": {
-        "entity": "Tempo",
-        "label": "Tempo / data",
-        "datasets": [
-          {
-            "slug": "ccnl_applicazione",
-            "name": "Ccnl Applicazione",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "ccnl_territorio",
-            "name": "Ccnl Territorio",
-            "column": "anno",
-            "semantic_type": "year"
-          }
-        ],
-        "types": {
-          "year": 2
-        }
-      }
-    },
-    "bridges": []
-  }
+  "checks": [],
+  "codelists": []
 }
